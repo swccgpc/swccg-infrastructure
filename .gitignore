@@ -1,0 +1,40 @@
+.DS_Store
+*.bak
+*~
+*.exe
+*.msi
+*.zip
+*.bin
+*.7z
+*.tar.gz
+*.tar.bz2
+.project
+
+.DS_Store
+
+#  Local .terraform directories
+**/.terraform/*
+
+# .tfstate files
+*.tfstate
+
+modules.json
+lock.json
+terraform-provider-aws_v2.28.1_x4
+**/.terraform/modules/modules.json
+**/.terraform/plugins/*/lock.json
+**/.terraform/plugins/*/terraform-provider-*
+*.tfstate.*
+
+import.sh
+
+# .tfvars files
+*.tfvars
+
+MD5SUM
+
+##
+## Do not check terraform.tfvars.json files in to git
+##
+terraform.tfvars.json
+terraform.tfvars.json*
