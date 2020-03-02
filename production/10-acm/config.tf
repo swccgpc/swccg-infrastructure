@@ -16,3 +16,14 @@ provider "aws" {
   profile = var.aws_profile
 }
 
+provider "aws" {
+  alias   = "use1"
+  region  = "us-east-1" # var.aws_region
+  profile = var.aws_profile
+}
+
+provider "aws" {
+  alias   = "use2"
+  region  = "us-east-2" # var.aws_region
+  profile = var.aws_profile
+}

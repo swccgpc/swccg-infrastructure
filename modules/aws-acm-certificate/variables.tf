@@ -1,4 +1,17 @@
 
+variable "aws_region" {
+  description = "AWS Region"
+  type        = string
+  default     = "us-east-1"
+} ## variable aws_region
+
+variable "aws_profile" {
+  description = "AWS Profile"
+  type        = string
+} ## variable aws_profile
+
+##########################################
+
 variable "domain_name" {
   description = "Domain Name, such as starwarsccg.org"
   type        = string
