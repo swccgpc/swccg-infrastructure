@@ -1,0 +1,9 @@
+---
+
+openssh_ports:
+  - 22
+
+openssh_allow_groups: ssh-users
+
+
+

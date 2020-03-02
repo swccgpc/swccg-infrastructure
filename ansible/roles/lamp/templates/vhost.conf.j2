@@ -1,0 +1,51 @@
+#######################################
+##                                   ##
+## Vhost template managed by ansible ##
+##                                   ##
+#######################################
+
+<VirtualHost *:{{ vhost_port | default('80', true) }}>
+  ServerName  {{ vhost_servername | default('localhost', true) }}
+  {% if vhost_aliases is defined %}ServerAlias {{ vhost_aliases | default('', true) }}{% endif %}
+
+  ServerAdmin webmaster@starwarsccg.org
+  DocumentRoot /var/www/{{ vhost_servername | default('localhost', true) }}
+  ErrorLog  /var/log/apache2/{{ vhost_servername | default('localhost', true) }}-error.log
+  CustomLog /var/log/apache2/{{ vhost_servername | default('localhost', true) }}-access.log combined
+
+  ServerSignature Off
+
+  <Directory /var/www/{{ vhost_servername | default('localhost', true) }}>
+    Require all granted
+    AllowOverride All
+  </Directory>
+
+  ## Logging
+  ErrorLog  "/var/log/apache2/{{ vhost_servername | default('localhost', true) }}-error.log"
+  CustomLog "/var/log/apache2/{{ vhost_servername | default('localhost', true) }}-access.log" combined
+
+
+  {% if (vhost_protocol == 'https') and (vhost_cert_file is defined) and (vhost_key_file is defined) %}
+  ## SSL directives
+  SSLEngine on
+
+  SSLProxyEngine On
+  SSLProxyVerify none
+  SSLProxyCheckPeerCN off
+
+  SSLCertificateFile      "{{ vhost_cert_file | default('/etc/ssl/certs/ssl-cert-snakeoil.pem', true) }}"
+  SSLCertificateKeyFile   "{{ vhost_key_file  | default('/etc/ssl/private/ssl-cert-snakeoil.key', true) }}"
+  {% if vhost_chain_file is defined %}
+  {% if (vhost_chain_file and (vhost_chain_file != "false")) %}SSLCertificateChainFile "{{ vhost_chain_file }}"{% endif %}
+  {% endif %}
+
+  {% endif %}
+
+
+  ## JSON Error Pages
+{{ json_error_pages | default("", true) }}
+
+  ## Custom fragment
+{{ vhost_custom_fragment | default("", true) }}
+
+</VirtualHost>

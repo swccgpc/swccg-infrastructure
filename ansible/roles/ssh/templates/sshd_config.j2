@@ -1,0 +1,180 @@
+################################################################
+##                                                            ##
+## This file is controlled by Ansible.                        ##
+##                                                            ##
+## *ANY* change you make to this file WILL BE OVERWRITTEN.    ##
+##                                                            ##
+################################################################
+
+{% for openssh_port in openssh_ports %}
+  Port {{ openssh_port }}
+{% endfor %}
+
+
+# Disable legacy (protocol version 1) support in the server for new
+# installations. In future the default will change to require explicit
+# activation of protocol 1
+Protocol 2
+
+# HostKeys for protocol version 2
+HostKey /etc/ssh/ssh_host_rsa_key
+HostKey /etc/ssh/ssh_host_dsa_key
+HostKey /etc/ssh/ssh_host_ecdsa_key
+HostKey /etc/ssh/ssh_host_ed25519_key
+
+Compression yes
+
+#
+# Ciphers
+#    Specifies the ciphers allowed for protocol version 2.
+#    Multiple ciphers must be comma-separated.
+#    The supported ciphers are:
+#
+#        3des-cbc
+#        aes128-cbc
+#        aes192-cbc
+#        aes256-cbc
+#        aes128-ctr
+#        aes192-ctr
+#        aes256-ctr
+#        aes128-gcm@openssh.com
+#        aes256-gcm@openssh.com
+#        arcfour
+#        arcfour128
+#        arcfour256
+#        blowfish-cbc
+#        cast128-cbc
+#        chacha20-poly1305@openssh.com
+#
+#    The default is:
+#
+#    aes128-ctr,aes192-ctr,aes256-ctr, 
+#    aes128-gcm@openssh.com,aes256-gcm@openssh.com, 
+#    chacha20-poly1305@openssh.com
+#
+# It is important to only use AES encryption with stateful-decryption counter (CTR) only.
+# 
+# AES with CBC is vulnerable to the Plaintext Recovery Attack Against SSH.
+# 
+# AES is the strongest encryption available in OpenSSL
+# and all others are too weak to trust.
+#
+Ciphers aes128-ctr,aes192-ctr,aes256-ctr,aes128-gcm@openssh.com,aes256-gcm@openssh.com,chacha20-poly1305@openssh.com
+
+KexAlgorithms diffie-hellman-group-exchange-sha256,ecdh-sha2-nistp256,ecdh-sha2-nistp384,ecdh-sha2-nistp521,curve25519-sha256@libssh.org
+
+MACs hmac-sha2-256,hmac-sha2-512,umac-64@openssh.com,umac-128@openssh.com,hmac-sha2-256-etm@openssh.com,hmac-sha2-512-etm@openssh.com,umac-128-etm@openssh.com
+
+
+# Logging
+# obsoletes QuietMode and FascistLogging
+#SyslogFacility AUTH
+SyslogFacility AUTHPRIV
+
+## LogLevel Default is INFO
+LogLevel INFO
+
+# Authentication:
+#
+# Reduce the maximum amount of time allowed to successfully login before disconnecting.
+# The default of 2 minutes is too much time to hold open an unauthenticated
+# connection attempt; 30 seconds is more than enough time to log in:
+LoginGraceTime 30
+
+PermitUserEnvironment no
+PermitRootLogin       no
+StrictModes           yes
+#
+# Per PCI 2.2.4, set the MaxAuthTries to 4
+#
+MaxAuthTries          4
+MaxSessions           10
+
+## needed for authorized_key access
+PubkeyAuthentication yes
+
+# AuthorizedKeysFile
+#    Specifies the file that contains the public keys that can be used for user
+#    authentication. The format is described in the AUTHORIZED_KEYS FILE FORMAT
+#    section of sshd(8). AuthorizedKeysFile may contain tokens of the form %T 
+#    which are substituted during connection setup. The following tokens are 
+#    defined: %% is replaced by a literal %, %h is replaced by the home 
+#    directory of the user being authenticated, and %u is replaced by the 
+#    username of that user. After expansion, AuthorizedKeysFile is taken 
+#    to be an absolute path or one relative to the user's home directory. 
+#    Multiple files may be listed, separated by whitespace. The default is 
+#            .ssh/authorized_keys .ssh/authorized_keys2
+AuthorizedKeysFile  .ssh/authorized_keys
+
+
+# Change to yes if you don't trust ~/.ssh/known_hosts for
+# RhostsRSAAuthentication and HostbasedAuthentication
+#IgnoreUserKnownHosts no
+IgnoreUserKnownHosts yes
+
+##
+## HostbasedAuthentication applies to protocol 2 only
+## HostbasedAuthentication default is no
+HostbasedAuthentication no
+
+# Don't read the user's ~/.rhosts and ~/.shosts files
+IgnoreRhosts yes
+
+PermitEmptyPasswords no
+PasswordAuthentication no
+ChallengeResponseAuthentication yes
+UsePAM yes
+KbdInteractiveAuthentication no
+
+# Accept locale-related environment variables
+AcceptEnv LANG LC_CTYPE LC_NUMERIC LC_TIME LC_COLLATE LC_MONETARY LC_MESSAGES
+AcceptEnv LC_PAPER LC_NAME LC_ADDRESS LC_TELEPHONE LC_MEASUREMENT
+AcceptEnv LC_IDENTIFICATION LC_ALL LANGUAGE
+AcceptEnv XMODIFIERS
+
+# AllowAgentForwarding yes
+# AllowTcpForwarding no
+AllowTcpForwarding local
+X11Forwarding      no
+UseDNS             no
+PrintMotd          no
+
+# MaxStartups
+#   Specifies the maximum number of concurrent unauthenticated connections to the
+#   SSH daemon.  Additional connections will be dropped until authentication suc‐
+#   ceeds or the LoginGraceTime expires for a connection.  The default is 10.
+#
+#   Alternatively, random early drop can be enabled by specifying the three colon
+#   separated values 'start:rate:full' (e.g. '10:30:60'). sshd(8) will refuse
+#   connection attempts with a probability of 'rate/100' (30%) if there are cur‐
+#   rently 'start' (10) unauthenticated connections.  The probability increases
+#   linearly and all connection attempts are refused if the number of unauthenti‐
+#   cated connections reaches 'full' (60).
+#
+#MaxStartups 10
+#
+# allow 3 users to attempt logging in at the same time, 
+# and to randomly and increasingly drop connection attempts 
+# between 3 and the maximum of 10
+#
+MaxStartups 3:50:10
+
+ClientAliveInterval 60
+ClientAliveCountMax 15
+TCPKeepAlive yes
+
+Subsystem sftp  /usr/lib/openssh/sftp-server
+
+# The allow/deny directives are processed in the following order:
+#     DenyUsers, AllowUsers, DenyGroups, and finally AllowGroups.
+# Each is a space-separated list
+DenyUsers root _apt _chrony backup bin clamav daemon dnsmasq games gnats irc kibana landscape list lp lxd mail man messagebus news nobody ossec ossecm ossecr pollinate proxy sshd sssd sync sys syslog systemd-network systemd-resolve td-agent uucp uuidd www-data
+AllowUsers
+DenyGroups
+AllowGroups {{ openssh_allow_groups | default("", true) }}
+
+
+
+
+
+

@@ -1,0 +1,25 @@
+---
+
+- name: /etc/cron.allow
+  copy:
+    dest:  /etc/cron.allow
+    owner: root
+    group: root
+    mode:  '0640'
+    content: |+
+      root
+      mailforward
+
+- name: /etc/cron.deny
+  copy:
+    dest:  /etc/cron.deny
+    owner: root
+    group: root
+    mode:  '0640'
+    content: |+
+      ubuntu
+      www-data
+      httpd
+      ec2-user
+      fedora
+

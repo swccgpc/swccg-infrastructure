@@ -1,0 +1,56 @@
+---
+
+##
+## Chrony is a different implementation of NTP than what ntpd uses.
+## Chrony is able to synchronize the system clock faster and with better accuracy than ntpd.
+## AWS recommends using Chrony unless you have a legacy reason to use ntpd.
+##
+## Get chrony status with:
+## chronyc tracking
+##
+
+- name: "remove ntp"
+  apt:
+    name:
+      - ntp
+      - ntpdate
+    state: absent
+
+- name: "apt install chrony"
+  apt:
+    name:  chrony
+    state: latest
+
+
+- name: "Remove ntp config files"
+  file:
+    path: "{{ item }}"
+    state: absent
+  with_items:
+    - /var/lib/ntp/ntp.conf.dhcp
+    - /etc/ntp.conf
+
+- name: /etc/chrony
+  file:
+    path:  /etc/chrony
+    state: directory
+    owner: root
+    group: '_chrony'
+    mode:  '0750'
+
+- name: "/etc/chrony/chrony.conf"
+  template:
+    src:   "chrony.conf.j2"
+    dest:  "/etc/chrony/chrony.conf"
+    owner: root
+    group: '_chrony'
+    mode:  "0640"
+  notify:
+    - restart chrony
+
+- name: chrony-service
+  service:
+    name:    chrony
+    state:   started
+    enabled: true
+

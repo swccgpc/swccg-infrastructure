@@ -1,0 +1,25 @@
+---
+
+- name: 'remove telnet (use netcat or nmap)'
+  apt:
+    name:
+      - inetutils-telnetd
+      - inetutils-telnet
+      - mactelnet-server
+      - procserv
+      - telnetd
+      - telnetd-ssl
+      - telnet
+      - mactelnet-client
+      ##
+      ## mainframes
+      ##
+      - x3270
+      - s3270
+      - pr3287
+      ##
+      ## PuTTY clients should not be used from Linux
+      ##
+      - putty
+      - putty-tools
+    state: absent

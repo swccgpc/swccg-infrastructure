@@ -1,0 +1,31 @@
+---
+
+- name: remove-unneccesary-system-accounts
+  user:
+    name: "{{ item }}"
+    state: absent
+  with_items:
+    - uucp
+    - nuucp
+    - lp
+    - lpd
+    - irc
+    - news
+    - games
+    - guest
+    - noaccess
+    ##
+    ## shutdown, halt, and sync exist on RHEL systems
+    ## so you can walk up to a console and *shutdown*
+    ## the system without logging in as a normal user.
+    ##
+    - shutdown
+    - sync
+    - halt
+    ##
+    ## operator exists on RHEL systems
+    ## so an *operator* can run backups and maintenance
+    ## without a real system account.
+    ##
+    - operator
+

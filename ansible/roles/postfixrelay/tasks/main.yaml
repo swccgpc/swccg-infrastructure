@@ -1,0 +1,129 @@
+---
+
+
+- name: "credstash postfix"
+  set_fact:
+    postfix_aws_access_key_id:     "{{ lookup('credstash', 'postfix_aws_access_key_id',     region='us-east-2', profile_name='swccg-production', table='prod-credstash') }}"
+    postfix_aws_secret_access_key: "{{ lookup('credstash', 'postfix_aws_secret_access_key', region='us-east-2', profile_name='swccg-production', table='prod-credstash') }}"
+    postfix_smtp_username:         "{{ lookup('credstash', 'postfix_smtp_username',         region='us-east-2', profile_name='swccg-production', table='prod-credstash') }}"
+    postfix_smtp_password:         "{{ lookup('credstash', 'postfix_smtp_password',         region='us-east-2', profile_name='swccg-production', table='prod-credstash') }}"
+
+
+
+
+
+- name: apt install
+  apt:
+    name:
+      - wget
+      - rsyslog
+      - postfix
+      - sasl2-bin
+      - opendkim
+      - opendkim-tools
+      - ca-certificates
+      - libnss3-tools
+      - mailutils
+
+
+##
+## mkcert
+## Assume already handled by LAMP role
+##
+
+
+##
+## postfix
+##
+- name: /etc/postfix/master.cf
+  shell:
+    cmd: |+
+      postconf -e myhostname="{{ myhostname | default('useast2-web-001.starwarsccg.local', true) }}"
+      postconf -F '*/*/chroot = n'
+
+##
+## SASL SUPPORT FOR CLIENTS
+## The following options set parameters needed by Postfix to enable
+## Cyrus-SASL support for authentication of mail clients.
+##
+
+- name: sasl2 /etc/postfix/main.cf
+  shell:
+    cmd: |+
+      postconf -e smtpd_sasl_auth_enable=yes
+      postconf -e broken_sasl_auth_clients=yes
+      postconf -e smtpd_recipient_restrictions=permit_sasl_authenticated,reject_unauth_destination
+
+
+- name: /etc/postfix/sasl/smtpd.conf
+  shell:
+    cmd: |+
+      echo "pwcheck_method: auxprop"                          > /etc/postfix/sasl/smtpd.conf
+      echo "auxprop_plugin: sasldb"                          >> /etc/postfix/sasl/smtpd.conf
+      echo "mech_list: PLAIN LOGIN CRAM-MD5 DIGEST-MD5 NTLM" >> /etc/postfix/sasl/smtpd.conf
+
+
+
+## sasldb2
+- name: /etc/postfix/sasl/smtpd.conf
+  shell:
+    cmd: |+
+      echo "{{ postfix_smtp_password }}" | saslpasswd2 -p -c -u "{{ myhostname | default('useast2-web-001.starwarsccg.org', true) }}" "{{ postfix_smtp_username }}"
+      chown postfix.sasl /etc/sasldb2
+
+
+##
+## Enable TLS
+##
+
+- name: /etc/postfix/main.cf
+  shell:
+    cmd: |+
+      postconf -e smtpd_tls_cert_file=/etc/ssl/certs/starwarsccg.org+5.pem
+      postconf -e smtpd_tls_key_file=/etc/ssl/private/starwarsccg.org+5-key.pem
+
+- name: /etc/postfix/master.cf
+  shell:
+    cmd: |+
+      postconf -M submission/inet="submission   inet   n   -   n   -   -   smtpd"
+      postconf -P "submission/inet/syslog_name=postfix/submission"
+      postconf -P "submission/inet/smtpd_tls_security_level=encrypt"
+      postconf -P "submission/inet/smtpd_sasl_auth_enable=yes"
+      postconf -P "submission/inet/milter_macro_daemon_name=ORIGINATING"
+      postconf -P "submission/inet/smtpd_recipient_restrictions=permit_sasl_authenticated,reject_unauth_destination"
+
+
+
+
+##
+## Amazon SES
+##
+- name: /etc/postfix/sasl_passwd
+  copy:
+    owner: 'root'
+    group: 'postfix'
+    mode:  '0644'
+    dest:  '/etc/postfix/sasl_passwd'
+    content: |+
+      {{ aws_relayhost | default('email-smtp.us-east-1.amazonaws.com:587', true) }} {{ postfix_aws_access_key_id }}:{{ postfix_aws_secret_access_key }}
+
+
+- name: postmap ses
+  shell:
+    cmd: |+
+      postmap hash:/etc/postfix/sasl_passwd
+      postconf -e relayhost="{{ aws_relayhost | default('email-smtp.us-east-1.amazonaws.com:587', true) }}"
+      postconf -e smtp_sasl_auth_enable=yes
+      postconf -e smtp_sasl_security_options=noanonymous
+      postconf -e smtp_sasl_password_maps=hash:/etc/postfix/sasl_passwd
+      postconf -e smtp_use_tls=yes
+      postconf -e smtp_tls_security_level=encrypt
+      postconf -e smtp_tls_note_starttls_offer=yes
+      postconf -e smtp_tls_CAfile=/etc/ssl/certs/ca-certificates.crt
+
+
+
+
+
+
+

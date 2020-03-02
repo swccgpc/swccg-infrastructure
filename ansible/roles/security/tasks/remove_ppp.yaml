@@ -1,0 +1,6 @@
+---
+
+- name: remove ppp
+  apt:
+    name:  ppp
+    state: absent

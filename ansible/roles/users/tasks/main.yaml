@@ -1,0 +1,79 @@
+---
+
+##
+## users who can *ssh* to the target host must be a part of this group
+##
+- name: ssh-users group
+  group:
+    name: ssh-users
+    state: present
+
+- name: admin group
+  group:
+    name: admin
+    state: present
+
+
+
+##
+## Users
+##
+
+- name: "users"
+  debug:
+    msg:
+      - "user.................: ({{ item.key }}) {{ item.value.username }}"
+      - "groups...............: {{ ','.join(item.value.groups) }}"
+      - "ssh_authorized_keys..: {{ ','.join(item.value.ssh_authorized_keys) }}"
+  with_dict: "{{ users }}"
+
+- name: "Create user accounts"
+  user:
+    name:        "{{ item.value.username }}"
+    shell:       "/bin/bash"
+    groups:      "{{ ','.join(item.value.groups) }}"
+    password:    "!"
+    create_home: true
+    home:        "/home/{{ item.value.username }}"
+  with_dict: "{{ users }}"
+
+- name: Create home directory
+  file:
+    path:  "/home/{{ item.value.username }}"
+    owner: "{{ item.value.username }}"
+    group: "{{ item.value.username }}"
+    mode:  "0700"
+    state: "directory"
+  with_dict: "{{ users }}"
+
+- name: Create .ssh directory
+  file:
+    path:  "/home/{{ item.value.username }}/.ssh"
+    owner: "{{ item.value.username }}"
+    group: "{{ item.value.username }}"
+    mode:  "0700"
+    state: "directory"
+  with_dict: "{{ users }}"
+
+- name: Set authorized_principals
+  copy:
+    dest:  "/home/{{ item.value.username }}/.ssh/authorized_principals"
+    owner: "{{ item.value.username }}"
+    group: "{{ item.value.username }}"
+    mode:  "0600"
+    content: |+
+      {{ item.value.username }}
+  with_dict: "{{ users }}"
+
+- name: Set authorized_keys
+  copy:
+    dest:  "/home/{{ item.value.username }}/.ssh/authorized_keys"
+    owner: "{{ item.value.username }}"
+    group: "{{ item.value.username }}"
+    mode:  "0600"
+    content: |+
+      {% for ssh_authorized_key in item.value.ssh_authorized_keys %}
+      {{ ssh_authorized_key }}
+      {% endfor %}
+  with_dict: "{{ users }}"
+

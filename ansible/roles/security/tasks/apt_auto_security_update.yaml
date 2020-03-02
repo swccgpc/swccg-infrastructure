@@ -1,0 +1,127 @@
+---
+
+- name: "remove 20auto-upgrades.ucf-dist"
+  file:
+    path:  /etc/apt/apt.conf.d/20auto-upgrades.ucf-dist
+    state: absent
+
+
+
+- name: "apt install unattended-upgrades"
+  apt:
+    name:  unattended-upgrades
+    state: latest
+
+
+- name: /etc/apt/apt.conf.d/20auto-upgrades
+  copy:
+    dest:  /etc/apt/apt.conf.d/20auto-upgrades
+    owner: root
+    group: root
+    mode:  '0644'
+    content: |+
+      // ############################################################
+      // ############################################################
+      // ####                                                    ####
+      // ####     FILE CONTROLLED BY ANSIBLE                     ####
+      // ####     ANY MANUAL CHANGES WILL BE OVERWRITTEN         ####
+      // ####                                                    ####
+      // ############################################################
+      // ############################################################
+      APT::Periodic::Update-Package-Lists "1";
+      APT::Periodic::Unattended-Upgrade   "1";
+
+
+- name: /etc/apt/apt.conf.d/50unattended-upgrades
+  copy:
+    dest:  /etc/apt/apt.conf.d/50unattended-upgrades
+    owner: root
+    group: root
+    mode:  '0644'
+    content: |+
+      // ############################################################
+      // ############################################################
+      // ####                                                    ####
+      // ####     FILE CONTROLLED BY ANSIBLE                     ####
+      // ####     ANY MANUAL CHANGES WILL BE OVERWRITTEN         ####
+      // ####                                                    ####
+      // ############################################################
+      // ############################################################
+      //
+      Unattended-Upgrade::Allowed-Origins {
+        "${distro_id}:${distro_codename}-security";
+        "${distro_id} ${distro_codename}-updates";
+        "3.x/apt stable:stable";
+      };
+      //
+      Unattended-Upgrade::Package-Blacklist {
+        "cypress*";
+      };
+      //
+      // apt-get autoremove
+      Unattended-Upgrade::Remove-Unused-Dependencies "true";
+      //
+      Unattended-Upgrade::Automatic-Reboot "{{ unattended_upgrade_automatic_reboot | default('true', true) }}";
+
+
+
+- name: /etc/apt/preferences.d/bionic-security
+  copy:
+    dest:  /etc/apt/preferences.d/bionic-security
+    owner: root
+    group: root
+    mode:  '0644'
+    content: |+
+      ############################################################
+      ############################################################
+      ####                                                    ####
+      ####     FILE CONTROLLED BY ANSIBLE                     ####
+      ####     ANY MANUAL CHANGES WILL BE OVERWRITTEN         ####
+      ####                                                    ####
+      ############################################################
+      ############################################################
+      ##
+      ##
+      ## Files originating from security repository are given the
+      ## default (500) priority so they are considered for installation.
+      ##
+      ## This means that only packages that are considered more
+      ## desirable than currently installed ones are security updates.
+      ##
+      Package: *
+      Pin: release a=bionic-security
+      Pin-Priority: 500
+      ##
+      ##
+      ## Pin all packages from ubuntu distribution to priority 50,
+      ## which will make them less desirable than already installed packages
+      ##
+      Package: *
+      Pin: release o=Ubuntu
+      Pin-Priority: 50
+
+- name: /etc/logrotate.d/apt-security-updates
+  copy:
+    dest:  /etc/logrotate.d/apt-security-updates
+    owner: root
+    group: root
+    mode:  '0644'
+    content: |+
+      /var/log/apt-security-updates.log {
+        rotate 2
+        weekly
+        size 250k
+        compress
+        notifempty
+      }
+
+- name: "unattended-upgrade cronjob"
+  cron:
+    name:    "unattended-upgrade cronjob"
+    user:    root
+    hour:    "{{ apt_get_auto_security_update_hour    | default(8, true) }}"
+    minute:  "{{ apt_get_auto_security_update_minute  | default(8, true) }}"
+    weekday: "{{ apt_get_auto_security_update_weekday | default('*', true) }}"
+    job:     '/usr/bin/unattended-upgrade -v -d 1> /var/log/apt-security-updates.log 2>&1'
+
+

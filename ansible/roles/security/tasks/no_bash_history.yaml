@@ -1,0 +1,12 @@
+---
+
+- name: 'no .bash_history file'
+  copy:
+    dest:  /etc/profile.d/no_bash_history_file.sh
+    owner: root
+    group: root
+    mode:  '0750'
+    content: |+
+      export HISTFILE=
+
+

@@ -1,0 +1,49 @@
+---
+
+- name: remove rsh
+  apt:
+    name:
+      - rsh-client
+      - rsh-redone-client
+      - rsh-redone-server
+      - rsh-server
+      - openbsd-inetd
+      - update-inetd
+      - tcpd
+    state: absent
+
+- name: remove rsh files
+  file:
+    dest:  "{{ item }}"
+    state: 'absent'
+  with_items:
+    - /etc/hosts.equiv
+    - /etc/inetd.conf
+    - /usr/bin/rcp
+    - /usr/bin/rexec
+    - /usr/bin/rlogin
+    - /usr/bin/rsh
+    - /usr/sbin/in.rshd
+    - /usr/sbin/in.rlogind
+    - /usr/sbin/in.rexecd
+    - /usr/sbin/tcpd
+
+- name: Get user accounts
+  command:      "awk -F: '{print $1}' /etc/passwd"
+  changed_when: false
+  check_mode:   false
+  register:     users
+
+- name: remove .rhosts from user homedirs
+  file:
+    dest:  '~{{ item }}/.rhosts'
+    state: 'absent'
+  with_flattened: '{{ users.stdout_lines | default([]) }}'
+
+- name: remove .netrc from user homedirs
+  file:
+    dest:  '~{{ item }}/.netrc'
+    state: 'absent'
+  with_flattened: '{{ users.stdout_lines | default([]) }}'
+
+

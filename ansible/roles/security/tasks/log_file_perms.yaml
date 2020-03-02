@@ -1,0 +1,21 @@
+---
+
+
+###
+### lastlog displays the recent login information for all the users.
+### This is not an ascii file. Use lastlog command to view the content of the file.
+###
+### utmp contains login records. Using wtmp you can find out who is logged into the system.
+### The who command uses this file to display the information.
+###
+- file:
+    path:  "{{ item }}"
+    owner: root
+    group: root
+    mode:  '0600'
+  with_items:
+    - /var/log/lastlog
+    - /var/run/utmp
+    - /var/log/btmp
+    - /var/log/wtmp
+

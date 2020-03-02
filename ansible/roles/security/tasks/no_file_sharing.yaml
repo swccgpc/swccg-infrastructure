@@ -1,0 +1,112 @@
+---
+
+
+# Samba uninstalled
+# We have to be a bit careful here.  Remove to much of Samba common
+# and we end up uninstalling other things we don't intend to, like 
+# FreeIPA packages and CheckMK server packages.
+- name: samba-uninstalled
+  apt:
+    state: absent
+    name:
+      - ctdb
+      - samba
+      - samba-dsdb-modules
+      - samba-vfs-modules
+      - system-config-samba
+
+##
+## Nothing shared
+##
+- name: "remove Samba Configuration Files"
+  file:
+    path:  "{{ item }}"
+    state: absent
+  with_items:
+    - /etc/samba.conf
+    - /etc/smb.conf
+    - /etc/samba/smb.conf
+    - /usr/share/samba/smb.conf
+    - /etc/samba/samba.conf
+
+##
+## NFS uninstalled
+##
+- name: nfs-uninstalled
+  apt:
+    state: absent
+    name:
+      - libnfsidmap
+      - libnfsidmap-devel
+      - nfs-utils
+      - nfs4-acl-tools
+      - perl-File-NFSLock
+      - texlive-mfnfss
+      - texlive-mfnfss-doc
+      - texlive-psnfss
+      - texlive-psnfss-doc
+
+##
+## nothing exporetd
+##
+- name: "Remove nfs exports"
+  file:
+    path:
+      - /etc/exports
+    state: absent
+
+##
+## FTP uninstalled
+##
+- name: remove-ftp-packages
+  apt:
+    state: absent
+    name:
+      - atftpd
+      - extplorer
+      - ftp
+      - ftpd
+      - ftpd-ssl
+      - inetutils-ftpd
+      - jftp
+      - lftp
+      - lftp-scripts
+      - muddleftpd
+      - nordugrid-arc-gridftpd
+      - proftpd-basic
+      - pure-ftpd
+      - python26-twisted-conch
+      - python27-twisted-conch
+      - syslinux-tftpboot
+      - tftp
+      - tftp-server
+      - tftpd
+      - tftpd-hpa
+      - twoftpd
+      - vsftpd
+
+- name: "Remove xinetd.d for ftp and vsftp"
+  file:
+    path: "{{ item }}"
+    state: absent
+  with_items:
+    - /etc/xinetd.d/ftp
+    - /etc/xinetd.d/vsftp
+
+##
+## nothing exported
+##
+- name: "Remove vsFTPd Configuration Files"
+  file:
+    path: "{{ item }}"
+    state: absent
+  with_items:
+    - /etc/vsftpd.ftpusers
+    - /etc/vsftpd.vsftpd.user_list
+    - /etc/vsftpd/ftpusers
+    - /etc/vsftpd/vsftpd.user_list
+
+
+
+
+

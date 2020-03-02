@@ -1,0 +1,35 @@
+---
+
+- name: Install OpenSSH
+  apt:
+    state: latest
+    name:
+      - openssh-server
+      - openssh-client
+
+- name: Remove Legacy OpenSSH v1 Client
+  apt:
+    state: absent
+    name:
+      - openssh-client-ssh1
+      - ssh-askpass-gnome
+
+
+
+- name: "/etc/ssh/sshd_config"
+  template:
+    src:   "sshd_config.j2"
+    dest:  "/etc/ssh/sshd_config"
+    owner: "root"
+    group: "root"
+    mode:  "0644"
+  notify: restart sshd
+
+- name: "/etc/ssh/ssh_config"
+  template:
+    src:   "ssh_config.j2"
+    dest:  "/etc/ssh/ssh_config"
+    owner: "root"
+    group: "root"
+    mode:  "0644"
+

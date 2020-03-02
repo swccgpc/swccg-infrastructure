@@ -1,0 +1,15 @@
+---
+
+- name: apt install sysstat
+  apt:
+    name:  sysstat
+    state: latest
+
+- name: /etc/default/sysstat
+  copy:
+    content: 'ENABLED="true"'
+    dest:    /etc/default/sysstat
+    owner:   root
+    group:   root
+    mode:    '0644'
+

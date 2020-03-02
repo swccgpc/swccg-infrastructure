@@ -1,0 +1,32 @@
+---
+
+- name: "dpkg --configure -a"
+  shell: "yes | dpkg --configure -a"
+
+- name: remove exim
+  apt:
+    name:
+      - 'exim4'
+      - 'exim4-base'
+      - 'exim4-config'
+      - 'exim4-daemon-heavy'
+      - 'exim4-daemon-light'
+      - 'exim4-dev'
+      - 'exim4-doc-html'
+      - 'exim4-doc-info'
+      - 'eximon4'
+      - 'geximon'
+      - 'gforge-mta-exim4'
+      - 'sa-exim'
+    state: absent
+    purge: true
+
+- name: remove Debian-exim
+  user:
+    name:  "Debian-exim"
+    state: absent
+
+- name: remove Debian-exim
+  group:
+    name:  "Debian-exim"
+    state: absent

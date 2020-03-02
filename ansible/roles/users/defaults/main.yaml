@@ -1,0 +1,11 @@
+---
+
+users:
+  devon:
+    username: devon
+    groups:
+      - ssh-users
+      - sudo
+      - admin
+    ssh_authorized_keys:
+      - "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQD4pxr8LWZGDw1lSKwN4geFQoWlWPUUCuDHxYQvOErSCSdEYeqCUVPO+DL5q2/O2uBbGaOnsmZYNcIBqcf7lleuSEsR7OpVMGk5CQbYAn5YF5gm0YzSBe2gUaQoq6888AjAVbLgBFhsn5tuz6iRe10AjcsfqjKuF7AbDtVz59kekYwiyEeeHS+3bk3892cB0F1rm53qRxkO7SdfGIJVNAZxp9NNmPK4zfB+dY4F5fYfBkOHhzy8roaeJWRsEQiB+4nLBJRADA5Athq+Oe/SW63H0qPn0yhA30IH0tXGZISrjuFfc5LF6D3MU8wiqt9ygkyKUnY2Mee+8xbDKazp5ott devon_starwar8"

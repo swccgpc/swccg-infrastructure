@@ -1,0 +1,34 @@
+---
+
+- include: apt_auto_security_update.yaml
+- include: auditd.yaml
+- include: autolog.yaml
+- include: console.yaml
+- include: cron_allow_deny.yaml
+- include: cron_file_dir_perms.yaml
+- include: disable_ipv6.yaml
+- include: fail2ban.yaml
+- include: issue.yaml
+- include: limits_disable_core_dumps.yaml
+- include: limits_max_number_of_open_files.yaml
+- include: log_file_perms.yaml
+- include: no_bash_history.yaml
+- include: no_file_sharing.yaml
+- include: pam_file_perms.yaml
+- include: passwd_shadow_file_perms.yaml
+- include: remove_default_users.yaml
+- include: remove_dovecot.yaml
+- include: remove_exim.yaml
+- include: remove_exrc_files_from_homedirs.yaml
+- include: remove_fuse.yaml
+- include: remove_ppp.yaml
+- include: remove_rpcbind.yaml
+- include: remove_rsh.yaml
+- include: remove_snapd.yaml
+- include: remove_telnet.yaml
+- include: remove_unneccesary_system_accounts.yaml
+- include: snoopy.yaml
+- include: sysctl.yaml
+- include: sysstat.yaml
+
+

@@ -1,0 +1,61 @@
+---
+
+- name: common-tools-install
+  apt:
+    name:
+    - curl
+    - ruby
+    - ruby-dev
+    - facter
+    - facter-dev
+    - findutils
+    - gawk
+    - htop
+    - jq
+    - less
+    - links
+    - nano
+    - sed
+    - vim-common
+    - wget
+    - tree
+    - unzip
+    - zip
+    - p7zip
+    - p7zip-full
+    - p7zip-rar
+    - psmisc
+    - debianutils
+    state: latest
+
+
+- name: vimrc
+  copy:
+    dest: "{{ item.path }}"
+    content: |-
+      " Switch off all auto-indenting
+      set nocindent
+      set nosmartindent
+      set noautoindent
+      set indentexpr=
+      filetype indent off
+      filetype plugin indent off
+      set nocompatible
+  when: "item.when"
+  with_items:
+    - { path: "/etc/vimrc",          when: true }
+    - { path: "/etc/skel/.vimrc",    when: true }
+    - { path: "/home/devon/.vimrc",  when: true }
+    - { path: "/root/.vimrc",        when: true }
+  ignore_errors: true
+
+
+
+
+
+
+
+
+
+
+

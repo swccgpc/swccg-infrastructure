@@ -1,0 +1,30 @@
+---
+
+- name:  install fail2ban
+  package:
+    name:  fail2ban
+    state: latest
+
+##
+## Every .conf file can be overridden with a file named .local.
+## The .conf file is read first, then .local,
+## with later settings overriding earlier ones.
+## See: https://dev-notes.eu/2016/12/overriding-fail2ban-settings/
+##
+- name: "Set permissions on /etc/fail2ban/jail.conf"
+  file:
+    path:  /etc/fail2ban/jail.conf
+    owner: root
+    group: root
+    mode:  '0644'
+
+# Default config. Only protects SSHd
+- name: "Create fail2ban jail.local config"
+  template: 
+    src: "templates/fail2ban_jail.local.j2"
+    dest: "/etc/fail2ban/jail.local"
+    owner: "root"
+    group: "root"
+    mode: '0644'
+  notify: restart fail2ban
+

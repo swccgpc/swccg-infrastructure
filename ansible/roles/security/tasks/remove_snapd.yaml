@@ -1,0 +1,30 @@
+---
+
+##
+## Remove the amazon-ssm-agent snap if running/installed
+##
+
+- name: Check if snap.amazon-ssm-agent is installed
+  shell: |+
+    if  dpkg -l | grep snapd > /dev/null && snap list 2> /dev/null | grep amazon-ssm-agent > /dev/null; then
+      echo "installed";
+    else
+      echo "not_installed";
+    fi
+  register: installed
+
+- name: Remove amazon-ssm-agent
+  shell:
+    snap remove amazon-ssm-agent
+  when: installed.stdout == "installed"
+
+- name: "apt purge snapd"
+  apt:
+    name:
+      - snapd
+      - lxcfs
+      - fuse
+      - squashfs-tools
+    state: absent
+    purge: true
+

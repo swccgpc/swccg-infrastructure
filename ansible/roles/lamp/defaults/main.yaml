@@ -1,0 +1,87 @@
+---
+
+install_mariadb: false
+
+
+apache2_vhosts:
+  http80:
+    vhost_weight:     200
+    vhost_protocol:   http
+    vhost_port:       80
+    vhost_servername: localhost
+  https443:
+    vhost_weight:     200
+    vhost_protocol:   https
+    vhost_port:       443
+    vhost_servername: localhost
+    vhost_cert_file:  '/etc/ssl/certs/ssl-cert-snakeoil.pem'
+    vhost_key_file:   '/etc/ssl/private/ssl-cert-snakeoil.pem'
+    vhost_chain_file: false
+
+
+json_error_pages: |
+    <Location "/error">
+      Require all granted
+    </Location>
+    #
+    Alias /error/ "/var/www/html/"
+    AddType application/json .json
+    #
+    ErrorDocument 400 /error/error400.json
+    ErrorDocument 401 /error/error401.json
+    ErrorDocument 403 /error/error403.json
+    ErrorDocument 404 /error/error404.json
+    ErrorDocument 405 /error/error405.json
+    ErrorDocument 408 /error/error408.json
+    ErrorDocument 410 /error/error410.json
+    ErrorDocument 411 /error/error411.json
+    ErrorDocument 412 /error/error412.json
+    ErrorDocument 413 /error/error413.json
+    ErrorDocument 414 /error/error414.json
+    ErrorDocument 415 /error/error415.json
+    ErrorDocument 500 /error/error500.json
+    ErrorDocument 501 /error/error501.json
+    ErrorDocument 502 /error/error502.json
+    ErrorDocument 503 /error/error503.json
+    ErrorDocument 506 /error/error506.json
+
+
+default_error_files:
+    'HTTP_BAD_REQUEST.html.var': '{"error":400}'
+    'HTTP_UNAUTHORIZED.html.var': '{"error":401}'
+    'HTTP_FORBIDDEN.html.var': '{"error":403}'
+    'HTTP_NOT_FOUND.html.var': '{"error":404}'
+    'HTTP_METHOD_NOT_ALLOWED.html.var': '{"error":405}'
+    'HTTP_REQUEST_TIME_OUT.html.var': '{"error":408}'
+    'HTTP_GONE.html.var': '{"error":410}'
+    'HTTP_LENGTH_REQUIRED.html.var': '{"error":411}'
+    'HTTP_PRECONDITION_FAILED.html.var': '{"error":412}'
+    'HTTP_REQUEST_ENTITY_TOO_LARGE.html.var': '{"error":413}'
+    'HTTP_REQUEST_URI_TOO_LARGE.html.var': '{"error":414}'
+    'HTTP_UNSUPPORTED_MEDIA_TYPE.html.var': '{"error":415}'
+    'HTTP_INTERNAL_SERVER_ERROR.html.var': '{"error":500}'
+    'HTTP_NOT_IMPLEMENTED.html.var': '{"error":501}'
+    'HTTP_BAD_GATEWAY.html.var': '{"error":502}'
+    'HTTP_SERVICE_UNAVAILABLE.html.var': '{"error":503}'
+    'HTTP_VARIANT_ALSO_VARIES.html.var': '{"error":506}'
+    'contact.html.var': '{"contact":"website"}'
+
+
+json_error_files:
+    'error400.json': '{"error":400}'
+    'error401.json': '{"error":401}'
+    'error403.json': '{"error":403}'
+    'error404.json': '{"error":404}'
+    'error405.json': '{"error":405}'
+    'error408.json': '{"error":408}'
+    'error410.json': '{"error":410}'
+    'error411.json': '{"error":411}'
+    'error412.json': '{"error":412}'
+    'error413.json': '{"error":413}'
+    'error414.json': '{"error":414}'
+    'error415.json': '{"error":415}'
+    'error500.json': '{"error":500}'
+    'error501.json': '{"error":501}'
+    'error502.json': '{"error":502}'
+    'error503.json': '{"error":503}'
+    'error506.json': '{"error":506}'

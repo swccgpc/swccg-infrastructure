@@ -1,0 +1,22 @@
+---
+
+- name: remove dovecot
+  apt:
+    name:
+      - 'dovecot-antispam'
+      - 'dovecot-core'
+      - 'dovecot-dbg'
+      - 'dovecot-dev'
+      - 'dovecot-gssapi'
+      - 'dovecot-imapd'
+      - 'dovecot-ldap'
+      - 'dovecot-lmtpd'
+      - 'dovecot-managesieved'
+      - 'dovecot-metadata-plugin'
+      - 'dovecot-mysql'
+      - 'dovecot-pgsql'
+      - 'dovecot-pop3d'
+      - 'dovecot-sieve'
+      - 'dovecot-solr'
+      - 'dovecot-sqlite'
+    state: absent

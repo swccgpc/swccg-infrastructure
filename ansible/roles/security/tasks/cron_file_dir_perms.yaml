@@ -1,0 +1,21 @@
+---
+
+- file:
+    path:  "{{ item }}"
+    owner: root
+    group: root
+    mode:  '0400'
+  with_items:
+    - /etc/crontab
+    - /etc/cron.daily
+    - /etc/cron.weekly
+    - /etc/cron.monthly
+
+- file:
+    path:  "{{ item }}"
+    owner: daemon
+    group: daemon
+    mode:  '1770'
+  with_items:
+    - /etc/cron.d
+    - /var/spool/cron

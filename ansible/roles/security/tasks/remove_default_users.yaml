@@ -1,0 +1,33 @@
+---
+
+##  OS/Distro       Official AMI ssh Username
+##    Amazon Linux    ec2-user
+##    Ubuntu          ubuntu
+##    Debian          admin
+##    RHEL 6.4+       ec2-user
+##    RHEL 6.3-       root
+##    Fedora          fedora
+##    Centos          centos
+##    SUSE            root
+##    BitNami         bitnami
+##    TurnKey         root
+##    NanoStack       ubuntu
+##    FreeBSD         ec2-user
+##    OmniOS          root
+##
+
+- name: remove default users
+  user:
+    name:   "{{ item }}"
+    state:  absent
+    remove: true
+  with_items:
+    - admin
+    - bitnami
+    - centos
+    - ec2-user
+    - fedora
+    - pi
+    - ubuntu
+
+

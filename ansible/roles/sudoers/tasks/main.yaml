@@ -1,0 +1,40 @@
+---
+
+##
+## Sudoers
+##
+
+- name: /etc/sudoers.d/admin
+  copy:
+    dest: "/etc/sudoers.d/admin"
+    owner: "root"
+    group: "root"
+    mode:  "0644"
+    content: |+
+      # admin: The admin group is used to grant sudo access on ubuntu 11.10 and earlier.
+      # It is still found on 12.04 for backwards compatibility.
+      %admin ALL=(ALL) NOPASSWD: ALL
+
+- name: /etc/sudoers.d/sudo
+  copy:
+    dest: "/etc/sudoers.d/sudo"
+    owner: "root"
+    group: "root"
+    mode:  "0644"
+    content: |+
+      # In Ubuntu 12.04, administrator access will be granted via the sudo group.
+      # This makes Ubuntu more consistent with the upstream implementation and Debian.
+      %sudo ALL=(ALL) NOPASSWD: ALL
+
+- name: /etc/sudoers
+  copy:
+    dest: "/etc/sudoers"
+    owner: "root"
+    group: "root"
+    mode:  "0440"
+    content: |+
+      Defaults env_reset
+      Defaults mail_badpass
+      Defaults secure_path="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/bin"
+      root   ALL=(ALL:ALL) ALL
+      #includedir /etc/sudoers.d

@@ -1,0 +1,15 @@
+#######################################
+##                                   ##
+## ports template managed by ansible ##
+##                                   ##
+#######################################
+{% set ports = [] %}
+
+{% for i in apache2_vhosts %}
+
+  {% if apache2_vhosts[i]['vhost_port'] not in ports %}
+    {{ ports.append(apache2_vhosts[i]['vhost_port']) | default("", true) }}
+    Listen *:{{ apache2_vhosts[i]['vhost_port'] }}
+  {%- endif %}
+
+{%- endfor %}

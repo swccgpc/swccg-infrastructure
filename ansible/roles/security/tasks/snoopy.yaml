@@ -1,0 +1,15 @@
+---
+
+- name:  apt install snoopy
+  package:
+    name:  snoopy
+    state: latest
+
+- name: /etc/profile.d/_snoopy.sh
+  copy:
+    dest: /etc/profile.d/_snoopy.sh
+    owner: 'root'
+    group: 'root'
+    mode:  '0755'
+    src:   "{{ role_path }}/files/_snoopy.sh"
+

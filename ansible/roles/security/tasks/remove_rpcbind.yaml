@@ -1,0 +1,19 @@
+---
+
+- name: remove rpcbind
+  apt:
+    name:  rpcbind
+    state: absent
+
+- name: "remove rpcbind configs"
+  file:
+    path:  "{{ item }}"
+    state: absent
+  with_items:
+    - /etc/init/rpcbind-boot.conf
+    - /etc/init/portmap-wait.conf
+    - /etc/init/rpcbind.conf
+    - /etc/init.d/rpcbind
+    - /etc/init/rpcbind.conf
+    - /etc/systemd/system/rpcbind.service
+    - /etc/insserv.conf.d/rpcbind

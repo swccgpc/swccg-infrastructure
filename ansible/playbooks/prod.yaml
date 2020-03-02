@@ -1,0 +1,60 @@
+---
+
+- hosts:         'prod'
+  become:        true
+  become_method: sudo
+  gather_facts:  true
+  pre_tasks:
+    - debug:
+        msg:
+          - 'inventory_hostname: {{ inventory_hostname }}'
+
+  tasks:
+
+    - name: "lamp"
+      include_role:
+        name: lamp
+      vars:
+        apache2_vhosts:
+          http80_forum:
+            vhost_weight:     200
+            vhost_protocol:   http
+            vhost_port:       80
+            vhost_servername: "forum.starwarsccg.org"
+
+          http80_store:
+            vhost_weight:     200
+            vhost_protocol:   http
+            vhost_port:       80
+            vhost_servername: "store.starwarsccg.org"
+
+          https443_forum:
+            vhost_weight:     200
+            vhost_protocol:   https
+            vhost_port:       443
+            vhost_servername: "forum.starwarsccg.org"
+            vhost_cert_file:  '/etc/ssl/certs/starwarsccg.org+5.pem'
+            vhost_key_file:   '/etc/ssl/private/starwarsccg.org+5-key.pem'
+            vhost_chain_file: '/etc/ssl/certs/rootCA.pem'
+
+          https443_store:
+            vhost_weight:     200
+            vhost_protocol:   https
+            vhost_port:       443
+            vhost_servername: "store.starwarsccg.org"
+            vhost_cert_file:  '/etc/ssl/certs/starwarsccg.org+5.pem'
+            vhost_key_file:   '/etc/ssl/private/starwarsccg.org+5-key.pem'
+            vhost_chain_file: '/etc/ssl/certs/rootCA.pem'
+
+
+
+
+  roles:
+    - users
+    - sudoers
+    - ssh
+    - chrony
+    - common-tools
+    - security
+
+

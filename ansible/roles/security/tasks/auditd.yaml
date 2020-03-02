@@ -1,0 +1,14 @@
+---
+
+- name: apt install auditd
+  apt:
+    name:  'auditd'
+    state: 'latest'
+
+- name: /etc/audit/auditd.conf
+  template:
+    src:   'auditd.conf.j2'
+    dest:  '/etc/audit/auditd.conf'
+    owner: 'root'
+    group: 'root'
+    mode:  '0640'

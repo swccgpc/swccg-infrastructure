@@ -1,0 +1,28 @@
+---
+
+- name: /etc/profile.d/tmout.sh
+  copy:
+    dest: /etc/profile.d/tmout.sh
+    content: |+
+      export TMOUT={{ idle_session_timeout | default(1800, true) }}
+
+
+- name: "apt install autolog"
+  apt:
+    name:  autolog
+    state: latest
+
+
+- name: /etc/autolog.conf
+  copy:
+    dest: /etc/autolog.conf
+    content: |+
+      name=.* idle=15 ban=0 hard=0 clear line=pts.* nomail
+      nolostkill
+
+- name: autolog service
+  service:
+    name:    autolog
+    enabled: true
+    state:   started
+

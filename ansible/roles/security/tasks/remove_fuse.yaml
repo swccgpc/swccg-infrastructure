@@ -1,0 +1,23 @@
+---
+
+- name: remove fuse
+  apt:
+    name:
+      - fuse
+      - fuse-dbg
+      - fuse-convmvfs
+      - fuse-emulator-common
+      - fuse-emulator-gtk
+      - fuse-emulator-sdl
+      - fuse-emulator-utils
+      - fuse-posixovl
+      - fuse-zip
+      - fuse2fs
+      - fusecram
+      - fusedav
+      - fuseext2
+      - fusefat
+      - fuseiso
+      - fuseiso9660
+      - fusesmb
+    state: absent

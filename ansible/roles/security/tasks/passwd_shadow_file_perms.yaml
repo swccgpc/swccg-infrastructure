@@ -1,0 +1,21 @@
+---
+
+- name: passwd file perms
+  file:
+    path: "{{ item }}"
+    owner: root
+    group: root
+    mode:  '0644'
+  with_items:
+    - /etc/group
+    - /etc/passwd
+
+- name: shadow file perms
+  file:
+    path: "{{ item }}"
+    owner: root
+    group: root
+    mode:  '0400'
+  with_items:
+    - /etc/shadow
+    - /etc/gshadow

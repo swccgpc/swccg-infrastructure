@@ -1,0 +1,106 @@
+---
+
+
+# Disable kernel IP forwarding
+- name:  /etc/sysctl.d/disable-kernel-ip-forwarding.conf
+  copy:
+    content: net.ipv4.ip_forward = 0
+    dest:    /etc/sysctl.d/disable-kernel-ip-forwarding.conf
+    owner:   root
+    group:   root
+    mode:    '0640'
+
+# Disable source packet routing
+- name:  /etc/sysctl.d/disable-source-packet-routing.conf
+  copy:
+    content: |+
+      net.ipv4.conf.all.accept_source_route     = 0
+      net.ipv4.conf.default.accept_source_route = 0
+    dest:  /etc/sysctl.d/disable-source-packet-routing.conf
+    owner: root
+    group: root
+    mode:  '0640'
+
+# Ignore ICMP broadcast requests
+- name:  /etc/sysctl.d/ignore-icmp-broadcast-requests.conf
+  copy:
+    content: net.ipv4.icmp_echo_ignore_broadcasts = 1
+    dest:    /etc/sysctl.d/ignore-icmp-broadcast-requests.conf
+    owner:   root
+    group:   root
+    mode:    '0640'
+
+# Ignore send redirects
+- name:  /etc/sysctl.d/ignore-send-requests.conf
+  copy:
+    content: |+
+      net.ipv4.conf.all.send_redirects     = 0
+      net.ipv4.conf.default.send_redirects = 0
+    dest:  /etc/sysctl.d/ignore-send-requests.conf
+    owner: root
+    group: root
+    mode:  '0640'
+
+# Block SYN attacks
+# net.ipv4.tcp_max_syn_backlog originally 2048
+# changed to 8096 to match netflix performance recommendations
+- name:  /etc/sysctl.d/block-syn-attacks.conf
+  copy:
+    content: |+
+      net.ipv4.tcp_max_syn_backlog = 8096
+      net.ipv4.tcp_synack_retries  = 2
+      net.ipv4.tcp_syn_retries     = 5
+    dest:  /etc/sysctl.d/block-syn-attacks.conf
+    owner: root
+    group: root
+    mode:  '0640'
+
+# Log Martians
+- name:  /etc/sysctl.d/log-martians.conf
+  copy:
+    content: |+
+      net.ipv4.conf.all.log_martians             = 1
+      net.ipv4.icmp_ignore_bogus_error_responses = 1
+    dest:  /etc/sysctl.d/log-martians.conf
+    owner: root
+    group: root
+    mode:  '0640'
+
+# Ignore ICMP redirects
+# Disable TCP timestamp responses on Linux
+- name:  /etc/sysctl.d/ignore-icmp-redirects.conf
+  copy:
+    content: |+
+      net.ipv4.conf.all.accept_redirects     = 0
+      net.ipv4.conf.default.accept_redirects = 0
+      net.ipv4.tcp_timestamps                = 0
+    dest:  /etc/sysctl.d/ignore-icmp-redirects.conf
+    owner: root
+    group: root
+    mode:  '0640'
+
+
+# taken from the presentation "How Netflix Tunes EC2 Instances for Performance"
+# by Brendan Gregg, Senior Performance Architect
+# AWS re:Invent 2017
+# https://www.slideshare.net/brendangregg/how-netflix-tunes-ec2-instances-for-performance
+- name:  /etc/sysctl.d/network-performance.conf
+  copy:
+    content: |+
+      net.core.somaxconn                 = 1024
+      net.core.netdev_max_backlog        = 5000
+      net.core.rmem_max                  = 16777216
+      net.core.wmem_max                  = 16777216
+      net.ipv4.tcp_wmem                  = 4096 12582912 16777216
+      net.ipv4.tcp_rmem                  = 4096 12582912 16777216
+      net.ipv4.tcp_max_syn_backlog       = 8096
+      net.ipv4.tcp_slow_start_after_idle = 0
+      net.ipv4.tcp_tw_reuse              = 1
+      net.ipv4.ip_local_port_range       = 10240 65535
+    dest:  /etc/sysctl.d/network-performance.conf
+    owner: root
+    group: root
+    mode:  '0640'
+
+- name:    sysctl-system
+  command: sysctl --system

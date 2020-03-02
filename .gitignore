@@ -31,6 +31,8 @@ import.sh
 # .tfvars files
 *.tfvars
 
+credstash.log
+
 MD5SUM
 
 ##

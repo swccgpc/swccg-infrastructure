@@ -1,0 +1,24 @@
+################################################################
+##                                                            ##
+## This file is controlled by Ansible.                        ##
+##                                                            ##
+## *ANY* change you make to this file WILL BE OVERWRITTEN.    ##
+##                                                            ##
+################################################################
+# Role: security
+
+
+[DEFAULT]
+bantime  = {{ fail2ban_ban_time | default(600, true) }}
+ignoreip = 127.0.0.1 {{ ansible_default_ipv4.address }}
+
+
+[sshd]
+enabled = true
+maxretry = {{ fail2ban_failed_logins | default(9, true) }}
+
+# Enable protection for any other services by creating files
+# in /etc/fail2ban/jail.d/  See the following page for the order
+# in which configs are applied:
+# https://dev-notes.eu/2016/12/overriding-fail2ban-settings/
+

@@ -1,0 +1,39 @@
+---
+
+- name: "remove default motd files"
+  file:
+    path:  "/etc/update-motd.d/{{ item }}"
+    state: absent
+  with_items:
+    - 00-header
+    - 10-help-text
+    - 30-banner
+    - 50-motd-news
+    - 51-cloudguest
+    - 80-livepatch
+    - 91-release-upgrade
+
+
+
+- name: "Create issue, issue.net, and motd files"
+  copy:
+    content: |+
+      ##########################################################################
+      ##                                                                      ##
+      ## This computer system is restricted to authorized users only.         ##
+      ## All activity is logged and regularly checked by systems personnel.   ##
+      ## Any unauthorized access or attempts to take down this server or its  ##
+      ## services will be fully investigated and reported to local law        ##
+      ## enforcement and prosecuted to the full extent of the law.            ##
+      ##                                                                      ##
+      ## Anyone using this system consents to these terms.                    ##
+      ##                                                                      ##
+      ##########################################################################
+    dest:  "{{ item }}"
+    owner: root
+    group: root
+    mode:  '0644'
+  with_items:
+    - '/etc/issue'
+    - '/etc/issue.net'
+    - '/etc/motd'
