@@ -9,3 +9,11 @@ users:
       - admin
     ssh_authorized_keys:
       - "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQD4pxr8LWZGDw1lSKwN4geFQoWlWPUUCuDHxYQvOErSCSdEYeqCUVPO+DL5q2/O2uBbGaOnsmZYNcIBqcf7lleuSEsR7OpVMGk5CQbYAn5YF5gm0YzSBe2gUaQoq6888AjAVbLgBFhsn5tuz6iRe10AjcsfqjKuF7AbDtVz59kekYwiyEeeHS+3bk3892cB0F1rm53qRxkO7SdfGIJVNAZxp9NNmPK4zfB+dY4F5fYfBkOHhzy8roaeJWRsEQiB+4nLBJRADA5Athq+Oe/SW63H0qPn0yhA30IH0tXGZISrjuFfc5LF6D3MU8wiqt9ygkyKUnY2Mee+8xbDKazp5ott devon_starwar8"
+  apollyon:
+    username: apollyon
+    groups:
+      - ssh-users
+      - sudo
+      - admin
+    ssh_authorized_keys:
+      - "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDq0pHhIJS2cXexD6F/A/3kGwb9UZ7ogpAU7W1ygIeci0H8uuNZTg3puj8uAWua/H8pUFSjKgNQ6dHruTbERb1/CUQpSYkusXHHg5iBSLFuv95MpF03+xdcrgEW+bfLuBoIp0xIvUHJokkzWtGggV5hw3mw4DNmljhd03b1xzJx08eH8TLINJULjkmaCuXD3X22eFqCfcPEBwU4FJfAkH57qSqBBZ/Erpgjunel9lsGxfF7ajwD5SIuMQYSkzenelr5u9FzM76bSgXb0fh5AQxw3t431kpGUhv0nvEIUbDf0qjw3bSJcwrdj6EaQJWxbASj4fyVGWs88JGnGlzIHbx8pzgJjXc32W+fsIYKVqWNmAP8JM9HVnOmZqCA0LxSL/tIF2WRTlo0Xe7ec/U8udOj7W7CeZdjFMi+M3XBbA0/PTlxl96rY0YnUW5M9jUolJbUsGGjOt5HRxzMbSfnyw28eAvFI9LPUhWQPT2+VAevbX2lxOs4+4sCVvk+n1mNINpDWht+Iypk4q93dxqUOvaW56VZLnLOpQZUWgfZFbFd2wncHCunkNwItIovAgDRosvfwvVJhVmRD1KJQJS01HaXdc9EIS/UvWdu+Ozog/mUPk+7die8s/bFN6/pSIcBYU9JuOc3OB3incYimubZ42UrKYir3zGJg4oQtUgCL1yidw== Jason"
