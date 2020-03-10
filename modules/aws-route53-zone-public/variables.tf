@@ -6,7 +6,7 @@ variable "zone_name" {
 } ## variable zone_name
 
 variable "dns_entries" {
-  type = list(object({
+  type = map(object({
     name    = string
     type    = string
     ttl     = string
