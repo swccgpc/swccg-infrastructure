@@ -36,6 +36,12 @@ resource "aws_cloudfront_distribution" "this" {
       ##
       query_string = false
 
+      ##
+      ## Origin header is required to pull the
+      ## CORS settings from the S3 bucket.
+      ##
+      headers      = ["Origin"]
+
       cookies {
         ##
         ## Specifies whether you want CloudFront to forward cookies 
@@ -79,7 +85,7 @@ resource "aws_cloudfront_distribution" "this" {
   } ## tags
 
   viewer_certificate {
-    cloudfront_default_certificate = true
+    cloudfront_default_certificate = false
     ##
     ## The ACM certificate must be in US-EAST-1.
     ##
