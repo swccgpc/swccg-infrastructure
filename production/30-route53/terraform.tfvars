@@ -23,18 +23,19 @@ starwarsccg_org_dns_entries = {
   "start":    {"name": "start",    "type": "CNAME", "ttl": "300", "records": ["ghs.googlehosted.com"]},
 
   "gemp": {"name": "gemp",           "type": "A",     "ttl": "300", "records": ["3.12.203.187"]},
+  "game": {"name": "game",           "type": "CNAME", "ttl": "300", "records": ["gemp.starwarsccg.org"]},
   "play": {"name": "play",           "type": "CNAME", "ttl": "300", "records": ["gemp.starwarsccg.org"]},
 
   "ssh": {"name": "ssh",            "type": "A",     "ttl": "300", "records": ["75.119.211.67"]},
 
-  #"mx": {"name": "", "type": "MX", "ttl": "300", "records":["10 ASPMX.L.GOOGLE.COM",
-  #                                                     "20 ALT1.ASPMX.L.GOOGLE.COM",
-  #                                                     "20 ALT2.ASPMX.L.GOOGLE.COM",
-  #                                                     "30 ASPMX2.GOOGLEMAIL.COM",
-  #                                                     "30 ASPMX3.GOOGLEMAIL.COM",
-  #                                                     "30 ASPMX4.GOOGLEMAIL.COM",
-  #                                                     "30 ASPMX5.GOOGLEMAIL.COM"]},
-  #"spf": {"name": "", "type": "TXT", "ttl": "300", "records":["v=spf1 mx include:netblocks.dreamhost.com include:spf1.mailchannels.net include:spf2.mailchannels.net -all"]}
+  "mx": {"name": "", "type": "MX", "ttl": "300", "records":["10 ASPMX.L.GOOGLE.COM",
+                                                            "20 ALT1.ASPMX.L.GOOGLE.COM",
+                                                            "20 ALT2.ASPMX.L.GOOGLE.COM",
+                                                            "30 ASPMX2.GOOGLEMAIL.COM",
+                                                            "30 ASPMX3.GOOGLEMAIL.COM",
+                                                            "30 ASPMX4.GOOGLEMAIL.COM",
+                                                            "30 ASPMX5.GOOGLEMAIL.COM"]},
+  "spf": {"name": "", "type": "TXT", "ttl": "300", "records":["v=spf1 mx include:netblocks.dreamhost.com include:spf1.mailchannels.net include:spf2.mailchannels.net -all"]}
 
 }
 
