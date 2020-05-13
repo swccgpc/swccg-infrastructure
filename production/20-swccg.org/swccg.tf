@@ -10,7 +10,7 @@ module "swccg_org" {
 
 
 resource "aws_route53_record" "swccg_org" {
-  zone_id = data.terraform_remote_state.r53.outputs.swccgmarket_com_zone_id
+  zone_id = data.terraform_remote_state.r53.outputs.swccg_org_zone_id
   name    = "swccg.org"
   type    = "A"
 
