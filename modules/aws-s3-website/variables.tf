@@ -41,10 +41,30 @@ variable "default_root_object" {
 } ## variable
 
 
+variable "application" {
+  description = "application: scomp, vkit, web, gemp"
+  type        = string
+  default     = "null"
+} ## variable
 
 locals {
   s3_origin_id = "S3-${var.s3_bucket_name}"
+  application  = var.application == "null" ? replace(var.s3_bucket_name, ".starwarsccg.org", "") : var.application
 }
 
+variable "min_ttl" {
+  type    = number
+  default = 86400
+} ## variable
+
+variable "default_ttl" {
+  type    = number
+  default = 86400
+} ## variable
+
+variable "max_ttl" {
+  type    = number
+  default = 86400
+} ## variable
 
 

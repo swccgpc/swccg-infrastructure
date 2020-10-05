@@ -40,7 +40,7 @@ resource "aws_cloudfront_distribution" "this" {
       ## Origin header is required to pull the
       ## CORS settings from the S3 bucket.
       ##
-      headers      = ["Origin"]
+      headers      = ["Access-Control-Request-Headers", "Access-Control-Request-Method", "Origin"]
 
       cookies {
         ##
@@ -56,9 +56,9 @@ resource "aws_cloudfront_distribution" "this" {
     ## One of allow-all, https-only, or redirect-to-https
     ##
     viewer_protocol_policy = "redirect-to-https"
-    min_ttl                = 0
-    default_ttl            = 3600
-    max_ttl                = 86400
+    min_ttl                = var.min_ttl
+    default_ttl            = var.default_ttl
+    max_ttl                = var.max_ttl
 
   } ## default_cache_behavior
 
@@ -82,6 +82,7 @@ resource "aws_cloudfront_distribution" "this" {
     Purpose     = "Static Website Hosting"
     Owner       = "Created by Terraform"
     AwsRegion   = var.aws_region
+    Application = local.application
   } ## tags
 
   viewer_certificate {

@@ -12,7 +12,7 @@ resource "aws_s3_bucket" "this" {
   cors_rule {
     allowed_headers = ["*"]
     allowed_methods = ["GET", "HEAD"]
-    allowed_origins = ["https://www.starwarsccg.org", "https://vkit.starwarsccg.org", "https://forum.starwarsccg.org", "https://store.starwarsccg.org", "https://res.starwarsccg.org"]
+    allowed_origins = ["https://starwarsccg.org",  "https://www.starwarsccg.org", "https://scomp.starwarsccg.org", "https://vkit.starwarsccg.org", "https://forum.starwarsccg.org", "https://store.starwarsccg.org", "https://res.starwarsccg.org", "https://github.com"]
     expose_headers  = ["Authorization", "Access-Control-Allow-Origin"]
     #max_age_seconds = 3000
   }
@@ -36,6 +36,7 @@ POLICY
     Purpose     = "Static Website Hosting"
     Owner       = "Created by Terraform"
     AwsRegion   = var.aws_region
+    Application = local.application
   } ## tags
 
 } ## resource aws_s3_bucket
