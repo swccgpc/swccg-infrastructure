@@ -11,3 +11,14 @@ variable "aws_profile" {
 } ## variable aws_profile
 
 
+##
+## DeckDB RDS Settings
+## Pul from terraform.tfvars
+##
+variable "rds_deckdb" {
+  type = map(string)
+  default = {
+    username = "xxxxxx"
+    password = "yyyyyy"
+  } ## default
+} ## variable rds_deckdb

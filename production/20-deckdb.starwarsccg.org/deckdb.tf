@@ -1,5 +1,8 @@
 
 
+##
+## S3 Redirect Website
+##
 module "deckdb_starwarsccg_org" {
   source            = "../../modules/aws-s3-website-redirect"
   s3_bucket_name    = "deckdb.starwarsccg.org"
@@ -22,6 +25,36 @@ resource "aws_route53_record" "deckdb_starwarsccg_org" {
 
 } ## resource aws_route53_record this
 
+
+
+
+
+
+
+
+
+
+
+##
+## Secrets Manager
+## RDS Username+Password Access
+##
+resource "aws_secretsmanager_secret" "rds_deckdb" {
+  name = "rds_deckdb"
+} ## resource aws_secretsmanager_secret rds_deckdb
+
+output "rds_deckdb_arn" { value = aws_secretsmanager_secret_version.rds_deckdb.arn }
+output "rds_deckdb_id" { value = aws_secretsmanager_secret_version.rds_deckdb.id }
+
+
+resource "aws_secretsmanager_secret_version" "rds_deckdb" {
+  secret_id     = aws_secretsmanager_secret.rds_deckdb.id
+  secret_string = jsonencode(var.rds_deckdb)
+} ## resource aws_secretsmanager_secret_version rds_deckdb
+
+output "rds_deckdb_version_arn" { value = aws_secretsmanager_secret_version.rds_deckdb.arn }
+output "rds_deckdb_version_id" { value = aws_secretsmanager_secret_version.rds_deckdb.id }
+output "rds_deckdb_version_version" { value = aws_secretsmanager_secret_version.rds_deckdb.version_id }
 
 
 
