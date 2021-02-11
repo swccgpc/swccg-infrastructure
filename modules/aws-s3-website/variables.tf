@@ -67,4 +67,9 @@ variable "max_ttl" {
   default = 86400
 } ## variable
 
+variable "viewer_protocol_policy" {
+  description = "allow-all, https-only, or redirect-to-https"
+  type    = string
+  default = "redirect-to-https"
+} ## variable
 
