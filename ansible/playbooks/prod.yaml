@@ -7,7 +7,9 @@
   pre_tasks:
     - debug:
         msg:
-          - 'inventory_hostname: {{ inventory_hostname }}'
+          - 'inventory_hostname..: {{ inventory_hostname }}'
+          - 'ansible_architecture: {{ ansible_architecture }}'
+          - 'mkcert arch.........: {% if ansible_architecture=="x86_64" %}amd64{% else %}arm64{% endif %}'
 
   tasks:
 
@@ -34,6 +36,18 @@
             vhost_port:       80
             vhost_servername: "store.starwarsccg.org"
 
+          http80_tournament:
+            vhost_weight:     200
+            vhost_protocol:   http
+            vhost_port:       80
+            vhost_servername: "tournament.starwarsccg.org"
+
+          http80_wptest:
+            vhost_weight:     200
+            vhost_protocol:   http
+            vhost_port:       80
+            vhost_servername: "wptest.starwarsccg.org"
+
           https443_forum:
             vhost_weight:     200
             vhost_protocol:   https
@@ -42,6 +56,9 @@
             vhost_cert_file:  '/etc/ssl/certs/starwarsccg.org+5.pem'
             vhost_key_file:   '/etc/ssl/private/starwarsccg.org+5-key.pem'
             vhost_chain_file: '/etc/ssl/certs/rootCA.pem'
+            vhost_custom_fragment: |+
+              Include "/etc/apache2/conf-available/marttiphpbb_trustxforwardedfor_ips.conf"
+              Include "/etc/apache2/conf-available/phpbb_security.conf"
 
           https443_store:
             vhost_weight:     200
@@ -52,24 +69,32 @@
             vhost_key_file:   '/etc/ssl/private/starwarsccg.org+5-key.pem'
             vhost_chain_file: '/etc/ssl/certs/rootCA.pem'
 
-          https443_www:
+          https443_tournament:
             vhost_weight:     200
             vhost_protocol:   https
             vhost_port:       443
-            vhost_servername: "www.starwarsccg.org"
+            vhost_servername: "tournament.starwarsccg.org"
+            vhost_cert_file:  '/etc/ssl/certs/starwarsccg.org+5.pem'
+            vhost_key_file:   '/etc/ssl/private/starwarsccg.org+5-key.pem'
+            vhost_chain_file: '/etc/ssl/certs/rootCA.pem'
+
+          https443_wptest:
+            vhost_weight:     200
+            vhost_protocol:   https
+            vhost_port:       443
+            vhost_servername: "wptest.starwarsccg.org"
             vhost_cert_file:  '/etc/ssl/certs/starwarsccg.org+5.pem'
             vhost_key_file:   '/etc/ssl/private/starwarsccg.org+5-key.pem'
             vhost_chain_file: '/etc/ssl/certs/rootCA.pem'
 
 
-
-  roles:
-    - users
-    - sudoers
-    - ssh
-    - chrony
-    - common-tools
-    - security
-    - postfixrelay
+#  roles:
+#    - users
+#    - sudoers
+#    - ssh
+#    - chrony
+#    - common-tools
+#    - security
+#    - postfixrelay
 
 

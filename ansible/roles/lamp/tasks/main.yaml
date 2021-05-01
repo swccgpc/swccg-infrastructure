@@ -48,9 +48,9 @@
 
 - name: "download mkcert"
   shell:
-    cmd: '/usr/bin/wget -O /usr/local/bin/mkcert "https://github.com/FiloSottile/mkcert/releases/download/v1.4.1/mkcert-v1.4.1-linux-amd64" ; /bin/chmod 0755 /usr/local/bin/mkcert'
+    #cmd: '/usr/bin/wget -O /usr/local/bin/mkcert "https://github.com/FiloSottile/mkcert/releases/download/v1.4.1/mkcert-v1.4.1-linux-amd64" ; /bin/chmod 0755 /usr/local/bin/mkcert'
+    cmd: "/usr/bin/wget -O /usr/local/bin/mkcert 'https://github.com/FiloSottile/mkcert/releases/download/v1.4.3/mkcert-v1.4.3-linux-{% if ansible_architecture=='x86_64' %}amd64{% else %}arm64{% endif %}' ; /bin/chmod 0755 /usr/local/bin/mkcert"
   when: not stat_mkcert.stat.exists
-
 
 - name: /usr/local/sbin/apache2_certs.sh
   copy:
@@ -225,8 +225,10 @@
     - 'xml2enc.load'
     - 'ssl.load'
     - 'ssl.conf'
-    - 'php7.2.load'
-    - 'php7.2.conf'
+    - 'php7.4.load'
+    - 'php7.4.conf'
+    - 'usertrack.load'
+    - 'headers.load'
 
 
 - name: disable mods
@@ -256,6 +258,150 @@
   copy:
     dest: /etc/apache2/mods-available/alias.conf
     content: '## managed by ansible'
+
+
+
+
+
+
+
+- name: /etc/apache2/conf-available/marttiphpbb_trustxforwardedfor_ips.conf
+  copy:
+    dest:  '/etc/apache2/conf-available/marttiphpbb_trustxforwardedfor_ips.conf'
+    owner: root
+    group: www-data
+    mode:  '0644'
+    src:   "{{ role_path }}/files/marttiphpbb_trustxforwardedfor_ips.conf"
+
+- name: /etc/apache2/conf-available/phpbb_security.conf
+  copy:
+    dest:  '/etc/apache2/conf-available/phpbb_security.conf'
+    owner: root
+    group: www-data
+    mode:  '0644'
+    src:   "{{ role_path }}/files/phpbb_security.conf"
+
+
+
+- name: /etc/apache2/conf-available/wordpress_login_url.conf
+  copy:
+    dest:  '/etc/apache2/conf-available/wordpress_login_url.conf'
+    owner: root
+    group: root
+    mode:  '0755'
+    content: |+
+      RewriteEngine On
+      RewriteCond %{HTTP_COOKIE} !JgUm0AThr3j5UWgjvh5exSmTp
+      RewriteRule /wp-login.php /starwars-login-OffHApAiB.php [R,L]
+      <Location /starwars-login-OffHApAiB.php>
+        CookieTracking on
+        CookieExpires 30
+        CookieName JgUm0AThr3j5UWgjvh5exSmTp
+      </Location>
+      RewriteRule /starwars-login-OffHApAiB.php /wp-login.php [NE]
+
+
+- name: /var/www/wordpress_lockdown.sh
+  copy:
+    dest:  '/var/www/wordpress_lockdown.sh'
+    owner: root
+    group: root
+    mode:  '0750'
+    src:   "{{ role_path }}/files/wordpress_lockdown.sh"
+
+- name: /var/www/wordpress_unlock.sh
+  copy:
+    dest:  '/var/www/wordpress_unlock.sh'
+    owner: root
+    group: root
+    mode:  '0750'
+    src:   "{{ role_path }}/files/wordpress_unlock.sh"
+
+- name: /var/www/make_robots_txt.py
+  copy:
+    dest:  '/var/www/make_robots_txt.py'
+    owner: root
+    group: root
+    mode:  '0750'
+    src:   "{{ role_path }}/files/make_robots_txt.py"
+
+
+
+
+- name: /usr/local/sbin/set_wordpress_login_url.py
+  copy:
+    dest:  '/usr/local/sbin/set_wordpress_login_url.py'
+    owner: root
+    group: root
+    mode:  '0750'
+    src:   "{{ role_path }}/files/set_wordpress_login_url.py"
+
+- name: "set wordpress login url"
+  cron:
+    name:    "set wordpress login url"
+    user:    root
+    minute:  "0,10,20,30,40,50"
+    job:     '/usr/local/sbin/set_wordpress_login_url.py 1>/dev/null 2>&1'
+
+
+
+- name: /usr/local/sbin/make_wp-login_denied_conf.sh
+  copy:
+    dest:  '/usr/local/sbin/make_wp-login_denied_conf.sh'
+    owner: root
+    group: root
+    mode:  '0750'
+    src:   "{{ role_path }}/files/make_wp-login_denied_conf.sh"
+
+- name: "make wp-login_denied.conf"
+  cron:
+    name:    "make wp-login_denied.conf"
+    user:    root
+    hour:    "0,3,6,9,12,18"
+    minute:  "0"
+    job:     '/usr/local/sbin/make_wp-login_denied_conf.sh 1>/dev/null 2>&1'
+
+
+
+
+
+- name: /etc/apache2/conf-enabled/block-msie6.conf
+  copy:
+    dest:  '/etc/apache2/conf-enabled/block-msie6.conf'
+    owner: root
+    group: root
+    mode:  '0755'
+    content: |+
+      SetEnvIfNoCase User-Agent 'MSIE 6.0' bad_actor
+      SetEnvIfNoCase User-Agent 'MSIE 7.0' bad_actor
+      SetEnvIfNoCase User-Agent 'MSIE 8.0' bad_actor
+      SetEnvIfNoCase User-Agent 'MSIE 9.0' bad_actor
+      SetEnvIfNoCase User-Agent 'MSIE 10.0' bad_actor
+      SetEnvIfNoCase User-Agent 'MSIE 11.0' bad_actor
+      SetEnvIfNoCase User-Agent 'Firefox/5' bad_actor
+      SetEnvIfNoCase User-Agent 'Firefox/60' bad_actor
+      SetEnvIfNoCase User-Agent 'Firefox/61' bad_actor
+      SetEnvIfNoCase User-Agent 'Firefox/62' bad_actor
+      SetEnvIfNoCase User-Agent 'Firefox/63' bad_actor
+      SetEnvIfNoCase User-Agent 'Firefox/64' bad_actor
+      SetEnvIfNoCase User-Agent 'Firefox/65' bad_actor
+      SetEnvIfNoCase User-Agent 'Firefox/66' bad_actor
+      SetEnvIfNoCase User-Agent 'Firefox/67' bad_actor
+      SetEnvIfNoCase User-Agent 'SeznamBot' bad_actor
+      <Directory "/var/www">
+              Order Allow,Deny
+              Allow from all
+              Deny from env=bad_actor
+      </Directory>
+      LogFormat "%a %{User-agent}i" ipagent
+      CustomLog /var/log/apache2/useragent.log ipagent
+
+
+
+
+
+
+
 
 
 - name: '/var/www/html/robots.txt'
@@ -310,6 +456,22 @@
     mode:    '0644'
     content: "{{ item.value }}"
   with_dict: "{{ default_error_files }}"
+
+
+
+- name: /etc/apache2/conf-enabled/error_pages.conf
+  copy:
+    dest:  '/etc/apache2/conf-enabled/error_pages.conf'
+    owner: root
+    group: root
+    mode:  '0644'
+    content: |+
+      Alias /error/ "/var/www/html/"
+      <Directory "/var/www/html/">
+        Options IncludesNoExec
+        Order allow,deny
+        Allow from all
+      </Directory>
 
 
 

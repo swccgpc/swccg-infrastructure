@@ -26,7 +26,16 @@ pip3 install ansible
 pip3 install credstash
 
 ##
-## If on MacOS X, High Sierra introduced new security changes which break Python fork().
+## On MacOS X, High Sierra introduced new security changes which break Python fork().
+##
+## objc[31109]: +[NSValue initialize] may have been in progress in another thread when fork() was called.
+## objc[31109]: +[NSValue initialize] may have been in progress in another thread when fork() was called. We cannot safely call it or ignore it in the fork() child process. Crashing instead. Set a breakpoint on objc_initializeAfterForkError to debug.
+## ERROR! A worker was found in a dead state
+##
+```
+
+
+
 ## To overcome this issue, you need to disable ObjC Fork Safety.
 ##
 echo "export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES" >> ~/.bash_profile

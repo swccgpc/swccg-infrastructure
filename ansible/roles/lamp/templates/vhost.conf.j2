@@ -21,6 +21,7 @@
   </Directory>
 
   ## Logging
+  LogFormat "%{X-Forwarded-For}i %h %l %u %t \"%r\" %>s %b \"%{Referer}i\" \"%{User-Agent}i\"" combined
   ErrorLog  "/var/log/apache2/{{ vhost_servername | default('localhost', true) }}-error.log"
   CustomLog "/var/log/apache2/{{ vhost_servername | default('localhost', true) }}-access.log" combined
 
@@ -47,5 +48,49 @@
 
   ## Custom fragment
 {{ vhost_custom_fragment | default("", true) }}
+
+  ##
+  ## Headers
+  ##
+  Header set X-Frame-Options           SAMEORIGIN
+  Header set X-Content-Type-Options    nosniff
+  Header set X-XSS-Protection          "1; mode=block"
+  Header set Strict-Transport-Security max-age=631138519
+  #Header set Content-Security-Policy   "default-src \'self\';"
+  Header set X-Robots-Tag              "noindex, noarchive, nosnippet"
+  Header always unset                  "X-Powered-By"
+  Header        unset                  "X-Powered-By"
+
+  ##
+  ## Block access to URLs
+  ##
+  <Location "/server-status">
+    order deny,allow
+    deny from all
+  </Location>
+
+  <FilesMatch "xmlrpc\.php$">
+    order deny,allow
+    deny from all
+  </FilesMatch>
+
+  <Location "/wp-config.php">
+    order deny,allow
+    deny from all
+  </Location>
+
+  <Location "/wp-cron.php">
+    order deny,allow
+    deny from all
+    allow from 127.0.0.1
+  </Location>
+
+  <Directory /var/www/{{ vhost_servername | default('localhost', true) }}/wp-content/uploads/>
+    <Files *.php>
+      deny from all
+    </Files>
+  </Directory>
+
+  Include "/etc/apache2/conf-available/wordpress_login_url.conf"
 
 </VirtualHost>

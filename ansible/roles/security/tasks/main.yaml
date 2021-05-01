@@ -32,3 +32,19 @@
 - include: sysstat.yaml
 
 
+
+
+- name: '/etc/hostname'
+  copy:
+    dest:  /etc/sysctl.d/socket_backlog.conf
+    owner: root
+    group: root
+    mode:  '0644'
+    content: "{{ inventory_hostname }}"
+
+
+- name: set hostname
+  shell: |+
+    hostname {{ inventory_hostname }}
+
+
