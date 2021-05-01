@@ -18,6 +18,13 @@
         name: lamp
       vars:
         apache2_vhosts:
+
+          http80_default:
+            vhost_weight:     100
+            vhost_protocol:   http
+            vhost_port:       80
+            vhost_servername: "html"
+
           http80_forum:
             vhost_weight:     200
             vhost_protocol:   http
