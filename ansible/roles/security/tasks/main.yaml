@@ -8,6 +8,7 @@
 - include: cron_file_dir_perms.yaml
 - include: disable_ipv6.yaml
 - include: fail2ban.yaml
+- include: hostname.yaml
 - include: issue.yaml
 - include: limits_disable_core_dumps.yaml
 - include: limits_max_number_of_open_files.yaml
@@ -31,20 +32,5 @@
 - include: sysctl.yaml
 - include: sysstat.yaml
 
-
-
-
-- name: '/etc/hostname'
-  copy:
-    dest:  /etc/sysctl.d/socket_backlog.conf
-    owner: root
-    group: root
-    mode:  '0644'
-    content: "{{ inventory_hostname }}"
-
-
-- name: set hostname
-  shell: |+
-    hostname {{ inventory_hostname }}
 
 

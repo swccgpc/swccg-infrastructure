@@ -1,6 +1,6 @@
 ---
 
-- hosts:         'prod'
+- hosts:         'web'
   become:        true
   become_method: sudo
   gather_facts:  true
@@ -95,13 +95,13 @@
             vhost_chain_file: '/etc/ssl/certs/rootCA.pem'
 
 
-#  roles:
-#    - users
-#    - sudoers
-#    - ssh
-#    - chrony
-#    - common-tools
-#    - security
-#    - postfixrelay
+  roles:
+    - users
+    - sudoers
+    - ssh
+    - chrony
+    - common-tools
+    - security
+    - postfixrelay
 
 

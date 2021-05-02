@@ -1,0 +1,31 @@
+---
+
+- name: '/etc/hostname'
+  copy:
+    dest:  /etc/hostname
+    owner: root
+    group: root
+    mode:  '0644'
+    content: "{{ inventory_hostname }}"
+
+##
+## https://aws.amazon.com/premiumsupport/knowledge-center/linux-static-hostname-rhel7-centos7/
+## https://aws.amazon.com/premiumsupport/knowledge-center/linux-static-hostname/
+##
+- name: set hostname
+  shell: |+
+    hostname {{ inventory_hostname }}
+    hostnamectl set-hostname --static {{ inventory_hostname }} ; true
+
+##
+## https://cloudinit.readthedocs.io/en/latest/topics/modules.html#set-hostname
+##
+- name: '/etc/cloud/cloud.cfg.d/99_hostname.cfg'
+  copy:
+    dest:  /etc/cloud/cloud.cfg.d/99_hostname.cfg
+    owner: root
+    group: root
+    mode:  '0644'
+    content: |+
+      preserve_hostname: true
+      hostname: {{ inventory_hostname }}
