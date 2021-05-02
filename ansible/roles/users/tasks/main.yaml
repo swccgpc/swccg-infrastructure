@@ -77,3 +77,35 @@
       {% endfor %}
   with_dict: "{{ users }}"
 
+
+
+##
+## groupadd -g 500 deckdb
+##
+- name: deckdb group
+  group:
+    gid:   500
+    name:  deckdb
+    state: present
+
+
+##
+## useradd -g 500 -u 500 -s /bin/false -d /opt/deckdb deckdb
+##
+- name: deckdb user
+  user:
+    name:        deckdb
+    shell:       "/bin/false"
+    uid:         500
+    group:       500
+    password:    "!"
+    create_home: false
+    home:        /opt/deckdb
+
+
+
+
+
+
+
+
