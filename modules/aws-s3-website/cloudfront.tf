@@ -25,7 +25,7 @@ resource "aws_cloudfront_distribution" "this" {
   aliases = var.domain_names
 
   default_cache_behavior {
-    allowed_methods  = ["GET", "HEAD"]
+    allowed_methods  = ["GET", "HEAD", "OPTIONS"]
     cached_methods   = ["GET", "HEAD"]
     target_origin_id = local.s3_origin_id
 
@@ -40,7 +40,7 @@ resource "aws_cloudfront_distribution" "this" {
       ## Origin header is required to pull the
       ## CORS settings from the S3 bucket.
       ##
-      headers      = ["Access-Control-Request-Headers", "Access-Control-Request-Method", "Origin"]
+      headers      = ["Access-Control-Allow-Origin", "Access-Control-Request-Headers", "Access-Control-Request-Method", "Origin"]
 
       cookies {
         ##

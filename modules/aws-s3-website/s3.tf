@@ -13,16 +13,17 @@ resource "aws_s3_bucket" "this" {
     allowed_headers = ["*"]
     allowed_methods = ["GET", "HEAD"]
     allowed_origins = ["https://starwarsccg.org",
-                       "https://gemp.starwarsccg.org",
-                       "https://www.starwarsccg.org",
-                       "https://scomp.starwarsccg.org",
-                       "https://vkit.starwarsccg.org",
+                       "https://decks.starwarsccg.org",
                        "https://forum.starwarsccg.org",
-                       "https://store.starwarsccg.org",
+                       "https://gemp.starwarsccg.org",
                        "https://res.starwarsccg.org",
+                       "https://scomp.starwarsccg.org",
+                       "https://store.starwarsccg.org",
+                       "https://vkit.starwarsccg.org",
+                       "https://www.starwarsccg.org",
                        "https://github.com"]
     expose_headers  = ["Authorization", "Access-Control-Allow-Origin"]
-    #max_age_seconds = 3000
+    max_age_seconds = var.max_ttl
   }
 
   policy = <<POLICY

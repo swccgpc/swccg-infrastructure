@@ -54,17 +54,17 @@ locals {
 
 variable "min_ttl" {
   type    = number
-  default = 86400
+  default = 31536000
 } ## variable
 
 variable "default_ttl" {
   type    = number
-  default = 86400
+  default = 31536000
 } ## variable
 
 variable "max_ttl" {
   type    = number
-  default = 86400
+  default = 31536000
 } ## variable
 
 variable "viewer_protocol_policy" {
