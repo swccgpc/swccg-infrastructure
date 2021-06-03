@@ -140,7 +140,7 @@ resource "aws_dynamodb_table" "Decks" {
     ## These are in addition to the primary key attributes and index key attributes,
     ## which are automatically projected.
     ##
-    projection_type    = "KEYS_ONLY"  # ALL, INCLUDE or KEYS_ONLY
+    projection_type    = "ALL"        # ALL, INCLUDE or KEYS_ONLY
                                       # ALL......: All of the table attributes are projected into the index.
                                       # KEYS_ONLY: In addition to the attributes described in KEYS_ONLY,
                                       #            the secondary index will include other non-key attributes 
@@ -158,7 +158,7 @@ resource "aws_dynamodb_table" "Decks" {
     ## These are in addition to the primary key attributes and index key attributes,
     ## which are automatically projected.
     ##
-    projection_type    = "KEYS_ONLY"  # ALL, INCLUDE or KEYS_ONLY
+    projection_type    = "ALL"        # ALL, INCLUDE or KEYS_ONLY
                                       # ALL......: All of the table attributes are projected into the index.
                                       # KEYS_ONLY: In addition to the attributes described in KEYS_ONLY,
                                       #            the secondary index will include other non-key attributes 
