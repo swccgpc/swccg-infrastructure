@@ -1,19 +1,16 @@
 localhost ansible_connection=local ansible_python_interpreter=/usr/local/bin/python3
 
 [web]
-#useast2-web-002.starwarsccg.org ansible_ssh_host=useast2-web-002.starwarsccg.org ansible_host=useast2-web-002.starwarsccg.org ansible_connection=ssh ansible_ssh_port=22 host_key_checking=false ansible_ssh_user=devon ansible_ssh_private_key_file='~/.ssh/devon_starwar8.pem' ansible_ssh_common_args='-o StrictHostKeyChecking=no'
-
 useast2-web-003.starwarsccg.org ansible_ssh_host=useast2-web-003.starwarsccg.org ansible_host=useast2-web-003.starwarsccg.org ansible_connection=ssh ansible_ssh_port=22 host_key_checking=false ansible_ssh_user=devon ansible_ssh_private_key_file='~/.ssh/devon_starwar8.pem' ansible_ssh_common_args='-o StrictHostKeyChecking=no'
 
 [deckdb]
 useast2-deckdb-001.starwarsccg.org ansible_ssh_host=useast2-deckdb-001.starwarsccg.org ansible_host=useast2-deckdb-001.starwarsccg.org ansible_connection=ssh ansible_ssh_port=22 host_key_checking=false ansible_ssh_user=devon ansible_ssh_private_key_file='~/.ssh/devon_starwar8.pem' ansible_ssh_common_args='-o StrictHostKeyChecking=no'
 
-
-
-
+[gemp]
+useast2-gemp-003.starwarsccg.org ansible_ssh_host=useast2-gemp-003.starwarsccg.org ansible_host=useast2-gemp-003.starwarsccg.org ansible_connection=ssh ansible_ssh_port=22 host_key_checking=false ansible_ssh_user=devon ansible_ssh_private_key_file='~/.ssh/devon_starwar8.pem' ansible_ssh_common_args='-o StrictHostKeyChecking=no'
 
 
 
 ##
-## ansible-playbook -i hosts playbooks/prod.yaml
+## ansible-playbook -i hosts playbooks/gemp.yaml
 ##
