@@ -20,5 +20,6 @@
     - common-tools
     - security
     - postfixrelay
+    - openjdk
 
 

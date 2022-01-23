@@ -1,0 +1,27 @@
+---
+
+##
+## OpenJDK
+##
+
+- name: 'apt install openjdk'
+  apt:
+    name:
+      - openjdk-17-jdk
+      - openjdk-17-jdk-headless
+    update_cache: yes
+    state: latest
+
+
+# networkaddress_cache
+## zero: do not cache
+## -1..: forever
+- name:    sed-networkaddress.cache.ttl-java.security
+  command: find /usr/lib/jvm/ -iname java.security -print -exec sed -i 's/.*networkaddress.cache.ttl.*/networkaddress.cache.ttl=0/g' {} \;
+
+
+
+
+
+
+
