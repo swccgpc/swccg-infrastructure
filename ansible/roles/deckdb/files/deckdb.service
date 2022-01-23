@@ -1,0 +1,17 @@
+[Unit]
+Description=deckdb
+
+[Service]
+User=deckdb
+Group=deckdb
+ExecStart=/opt/deckdb/run.sh
+WorkingDirectory=/opt/deckdb
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
+
+systemctl daemon-reload
+systemctl start deckdb.service
+systemctl enable deckdb
+
