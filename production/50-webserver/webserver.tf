@@ -52,6 +52,18 @@ resource "aws_route53_record" "forum" {
 
 } ## resource aws_route53_record forum
 
+resource "aws_route53_record" "forumtest" {
+  zone_id = data.terraform_remote_state.r53.outputs.zone_id
+  name    = "forum-test.starwarsccg.org"
+  type    = "A"
+
+  alias {
+    name                   = module.webserver.aws_lb_dns_name
+    zone_id                = module.webserver.aws_lb_zone_id
+    evaluate_target_health = false
+  } ## alias
+
+} ## resource aws_route53_record forum
 
 
 
