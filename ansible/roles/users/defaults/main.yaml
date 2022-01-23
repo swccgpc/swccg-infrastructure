@@ -9,3 +9,19 @@ users:
       - admin
     ssh_authorized_keys:
       - "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQD4pxr8LWZGDw1lSKwN4geFQoWlWPUUCuDHxYQvOErSCSdEYeqCUVPO+DL5q2/O2uBbGaOnsmZYNcIBqcf7lleuSEsR7OpVMGk5CQbYAn5YF5gm0YzSBe2gUaQoq6888AjAVbLgBFhsn5tuz6iRe10AjcsfqjKuF7AbDtVz59kekYwiyEeeHS+3bk3892cB0F1rm53qRxkO7SdfGIJVNAZxp9NNmPK4zfB+dY4F5fYfBkOHhzy8roaeJWRsEQiB+4nLBJRADA5Athq+Oe/SW63H0qPn0yhA30IH0tXGZISrjuFfc5LF6D3MU8wiqt9ygkyKUnY2Mee+8xbDKazp5ott devon_starwar8"
+  adam:
+    username: adam
+    groups:
+      - ssh-users
+      - sudo
+      - admin
+    ssh_authorized_keys:
+      - "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDANKjx5VYoP/Wq0+dzobIrTv2T6MS31qoP4orDe8CHS0c9W9TwxI1jApMS1/ggj5EH25WH4labvRBgxpUc1Kg3h2MIj94hbCnR2JtpREDJLV0yfqYuyO3ygLIlxh9ati07YgoCmcmkQ+xcCkxeD78gNGH3wvDajcIfsG866YLTPUYr4jSh7p4VzWlpYCNbSdm7cmh+8b+671lQH+OOfO0CqDRU/arjBzelvyJnLgWFXpLts65MVRcX2NbSRNDO5s1LBwrPjbcjQp5mj+aSZSJ4FUP6czH1LXstqcbAWwoWMJLVaGjgMRSavrhbT3ufYWTcTeBFEjk+cWzliXZt9F2h GempSwccgKeyPair"
+  peter:
+    username: peter
+    groups:
+      - ssh-users
+      - sudo
+      - admin
+    ssh_authorized_keys:
+      - "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDA0dGRRro49MNB3cHCtOmPAowv4TodUBVlZh9xIxSn2/lFdDy7Cf/Iedy110sZvpPIxparIIyXmNW4zLo6OSP9PHys3oQGfXqgA8wKPEa1OYPONcIfj6mwNCHmet6PsKNRwy51TnKEzkv9BHxOqtTamFZ+pOnXea8SgCFK4VnlUwOwSxvEarH+Aqo0S+ZxTWHjmUChf20Im+WPoRaQBJu5ak9cN8J9tQT3g+jd/CaKPPOjy56SjVIyUnuJVL1f8tcgoPK29+9kJW086GRRo5LOWlSZBX1YqrxrYVFuTalPHFB0d4x3g5QSfx1fsqrUwbA5Y6wZd03Phs9yFDeH9QRp5V4EURi8542OKrJqT2O7oh1DKKK+hdFm1dGYxopIwCEIUWB1HxfwNsh8m/FjsayhAIcchyOyme0lUWZvNZoOzPgBrJYlHyEMo1ouYkLgLh3YqMF4BPIB1H09pou5V5sDZxmZyvVqHXehXsd3p9DyF1m/fiZ7uRz7ci5aXlzlPHPKNeofS+cSrjLctDWfkgS+Nrc1cbJGz3HviPv9df9L4l4jWjMlrYOvnQYaSyiVribY/27sCNqrtsgbhJcu55ZzcwQ6uHThd7pMjASdt3G+THLWkVQizY7wT9Fm6SnOiRR/9pjNzLftR/5rW6jkbuLpvW3cX17hcu2vk4aqspRajQ== peter.soetens@gmail.com"

@@ -1,0 +1,23 @@
+---
+
+- hosts:         'web'
+  become:        true
+  become_method: sudo
+  gather_facts:  true
+  pre_tasks:
+    - debug:
+        msg:
+          - 'inventory_hostname..: {{ inventory_hostname }}'
+          - 'ansible_architecture: {{ ansible_architecture }}'
+          - 'mkcert arch.........: {% if ansible_architecture=="x86_64" %}amd64{% else %}arm64{% endif %}'
+
+  roles:
+    - users
+    - sudoers
+    - ssh
+    - chrony
+    - common-tools
+    - security
+    - postfixrelay
+
+
