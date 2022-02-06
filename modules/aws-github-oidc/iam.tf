@@ -21,6 +21,11 @@ variable "github_repos" {
 
 data "aws_caller_identity" "current" {}
 
+
+data "tls_certificate" "github" {
+  url = "https://token.actions.githubusercontent.com/.well-known/openid-configuration"
+}
+
 ##
 ## IAM OIDC identity providers are entities in IAM that describe an 
 ## external identity provider (IdP) service that supports 
@@ -44,7 +49,8 @@ locals {
 resource "aws_iam_openid_connect_provider" "GitHubOidcProvider" {
   url = "https://token.actions.githubusercontent.com"
 
-  client_id_list = local.client_ids
+  #client_id_list = local.client_ids
+  client_id_list = ["https://github.com/swccgpc", "sts.amazonaws.com"] # Used by aws-actions/configure-aws-credentials
 
   ##
   ## A list of server certificate thumbprints for the OpenID Connect (OIDC) 
@@ -56,8 +62,16 @@ resource "aws_iam_openid_connect_provider" "GitHubOidcProvider" {
   ## The server certificate thumbprint is the hex-encoded SHA-1 
   ## hash value of the X.509 certificate used by the domain where 
   ## the OpenID Connect provider makes its keys available.
+  ## calculate/verify the value by https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_providers_create_oidc_verify-thumbprint.html
   ##
-  thumbprint_list = ["a031c46782e6e6c662c2c87c76da9aa62ccabd8e"]
+  ## JWKS_URI=$(curl https://token.actions.githubusercontent.com/.well-known/openid-configuration | jq -r '.jwks_uri' | sed 's/https:\/\///g' | sed 's/\/\.well-known\/jwks//g')
+  ## openssl s_client -servername $JWKS_URI -showcerts -connect $JWKS_URI:443 | tee certificate.crt
+  ## openssl x509 -in certificate.crt -fingerprint -noout
+  ##
+  thumbprint_list = data.tls_certificate.github.certificates[*].sha1_fingerprint
+    #"15E29108718111E59B3DAD31954647E3C344A231", ## sha1 fingerprint from *.actions.github.com
+    #"6938fd4d98bab03faadb97b34396831e3780aea1", ## sha1 fingerprint from digicert root cert
+    #"a031c46782e6e6c662c2c87c76da9aa62ccabd8e", ## original value
 }
 
 
@@ -80,6 +94,7 @@ resource "aws_iam_role" "githubactionsrole" {
     "Action": "sts:AssumeRoleWithWebIdentity",
     "Condition": {
       "StringLike": {
+        "token.actions.githubusercontent.com:aud": ["sts.amazonaws.com"],
         "token.actions.githubusercontent.com:sub": "repo:${var.github_repos[each.key]["repo"]}:ref:refs/heads/main"
       }
     }
