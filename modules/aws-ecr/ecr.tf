@@ -1,6 +1,6 @@
 
-resource "aws_ecr_repository" "discordcardlinker" {
-  name                 = "discordcardlinker"
+resource "aws_ecr_repository" "this" {
+  name                 = var.ecr_name
   ##
   ## If an image tag is IMMUTABLE then it can NOT be overwritten.
   ##
@@ -9,18 +9,18 @@ resource "aws_ecr_repository" "discordcardlinker" {
   image_scanning_configuration {
     scan_on_push = false
   } ## image_scanning_configuration
-} ## resource aws_ecr_repository discordcardlinker
+} ## resource aws_ecr_repository this
 
 
-output "discordcardlinker_arn" {
-  value = aws_ecr_repository.discordcardlinker.arn
+output "ecr_arn" {
+  value = aws_ecr_repository.this.arn
 }
 
-output "discordcardlinker_registry_id" {
-  value = aws_ecr_repository.discordcardlinker.registry_id
+output "ecr_registry_id" {
+  value = aws_ecr_repository.this.registry_id
 }
 
-output "discordcardlinker_repository_url" {
-  value = aws_ecr_repository.discordcardlinker.repository_url
+output "ecr_repository_url" {
+  value = aws_ecr_repository.this.repository_url
 }
 
