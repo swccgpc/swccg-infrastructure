@@ -35,7 +35,7 @@ starwarsccg_org_dns_entries = {
                                                             "30 ASPMX3.GOOGLEMAIL.COM",
                                                             "30 ASPMX4.GOOGLEMAIL.COM",
                                                             "30 ASPMX5.GOOGLEMAIL.COM"]},
-  "spf": {"name": "", "type": "TXT", "ttl": "300", "records":["v=spf1 mx include:netblocks.dreamhost.com include:spf1.mailchannels.net include:spf2.mailchannels.net -all"]}
+  "spf": {"name": "", "type": "TXT", "ttl": "300", "records":["v=spf1 mx include:_spf.google.com include:spf1.mailchannels.net include:spf2.mailchannels.net -all"]}
 
 }
 
