@@ -30,6 +30,7 @@
 - name: "Create user accounts"
   user:
     name:        "{{ item.value.username }}"
+    state:       "{{ item.value.state }}"
     shell:       "/bin/bash"
     groups:      "{{ ','.join(item.value.groups) }}"
     password:    "!"

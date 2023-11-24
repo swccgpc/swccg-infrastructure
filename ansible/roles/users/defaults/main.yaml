@@ -3,6 +3,7 @@
 users:
   devon:
     username: devon
+    state: present
     groups:
       - ssh-users
       - sudo
@@ -11,6 +12,7 @@ users:
       - "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQD4pxr8LWZGDw1lSKwN4geFQoWlWPUUCuDHxYQvOErSCSdEYeqCUVPO+DL5q2/O2uBbGaOnsmZYNcIBqcf7lleuSEsR7OpVMGk5CQbYAn5YF5gm0YzSBe2gUaQoq6888AjAVbLgBFhsn5tuz6iRe10AjcsfqjKuF7AbDtVz59kekYwiyEeeHS+3bk3892cB0F1rm53qRxkO7SdfGIJVNAZxp9NNmPK4zfB+dY4F5fYfBkOHhzy8roaeJWRsEQiB+4nLBJRADA5Athq+Oe/SW63H0qPn0yhA30IH0tXGZISrjuFfc5LF6D3MU8wiqt9ygkyKUnY2Mee+8xbDKazp5ott devon_starwar8"
   adam:
     username: adam
+    state: absent
     groups:
       - ssh-users
       - sudo
@@ -19,6 +21,7 @@ users:
       - "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDANKjx5VYoP/Wq0+dzobIrTv2T6MS31qoP4orDe8CHS0c9W9TwxI1jApMS1/ggj5EH25WH4labvRBgxpUc1Kg3h2MIj94hbCnR2JtpREDJLV0yfqYuyO3ygLIlxh9ati07YgoCmcmkQ+xcCkxeD78gNGH3wvDajcIfsG866YLTPUYr4jSh7p4VzWlpYCNbSdm7cmh+8b+671lQH+OOfO0CqDRU/arjBzelvyJnLgWFXpLts65MVRcX2NbSRNDO5s1LBwrPjbcjQp5mj+aSZSJ4FUP6czH1LXstqcbAWwoWMJLVaGjgMRSavrhbT3ufYWTcTeBFEjk+cWzliXZt9F2h GempSwccgKeyPair"
   peter:
     username: peter
+    state: absent
     groups:
       - ssh-users
       - sudo
