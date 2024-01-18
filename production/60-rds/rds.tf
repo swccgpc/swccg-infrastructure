@@ -6,24 +6,8 @@
 #   jq '.DBEngineVersions[] | "\(.DBParameterGroupFamily) \(.EngineVersion) \(.DBEngineVersionDescription)"'
 #
 # DBEngineVersion  DBParameterGroupFamily Engine  DBEngineVersionDescription
-# mariadb10.0      10.0.24                MariaDB 10.0.24
-# mariadb10.0      10.0.28                MariaDB 10.0.28
-# mariadb10.0      10.0.31                mariadb 10.0.31
-# mariadb10.0      10.0.32                mariadb 10.0.32
-# mariadb10.0      10.0.34                mariadb 10.0.34
-# mariadb10.0      10.0.35                MariaDB 10.0.35
-# mariadb10.1      10.1.19                MariaDB 10.1.19
-# mariadb10.1      10.1.23                mariadb 10.1.23
-# mariadb10.1      10.1.26                mariadb 10.1.26
-# mariadb10.1      10.1.31                mariadb 10.1.31
-# mariadb10.1      10.1.34                MariaDB 10.1.34
-# mariadb10.2      10.2.11                MariaDB 10.2.11
-# mariadb10.2      10.2.12                mariadb 10.2.12
-# mariadb10.2      10.2.15                MariaDB 10.2.15
-# mariadb10.2      10.2.21                MariaDB 10.2.21
-# mariadb10.3      10.3.8                 MariaDB 10.3.8
-# mariadb10.3      10.3.13                MariaDB 10.3.13
 # mariadb10.3      10.3.20                MariaDB 10.3.20
+# mariadb10.6      10.6.7                 MariaDB 10.6.7
 #
 
 
@@ -31,7 +15,7 @@ module "rds" {
   source            = "../../modules/aws-rds"
 
   engine            = "mariadb"
-  engine_version    = "10.3.20"
+  engine_version    = "10.6.7"
   instance_class    = "db.t2.large"
   allocated_storage = 10
 
@@ -63,10 +47,10 @@ module "rds" {
                 data.terraform_remote_state.vpc.outputs.aws_subnet_trust3_id]
 
   # DB parameter group
-  family = "mariadb10.3"
+  family = "mariadb10.6"
 
   # DB option group
-  major_engine_version = "10.3"
+  major_engine_version = "10.6"
 
   # Snapshot name upon DB deletion
   final_snapshot_identifier = "swccg-web"
