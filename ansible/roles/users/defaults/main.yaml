@@ -28,3 +28,12 @@ users:
       - admin
     ssh_authorized_keys:
       - "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDA0dGRRro49MNB3cHCtOmPAowv4TodUBVlZh9xIxSn2/lFdDy7Cf/Iedy110sZvpPIxparIIyXmNW4zLo6OSP9PHys3oQGfXqgA8wKPEa1OYPONcIfj6mwNCHmet6PsKNRwy51TnKEzkv9BHxOqtTamFZ+pOnXea8SgCFK4VnlUwOwSxvEarH+Aqo0S+ZxTWHjmUChf20Im+WPoRaQBJu5ak9cN8J9tQT3g+jd/CaKPPOjy56SjVIyUnuJVL1f8tcgoPK29+9kJW086GRRo5LOWlSZBX1YqrxrYVFuTalPHFB0d4x3g5QSfx1fsqrUwbA5Y6wZd03Phs9yFDeH9QRp5V4EURi8542OKrJqT2O7oh1DKKK+hdFm1dGYxopIwCEIUWB1HxfwNsh8m/FjsayhAIcchyOyme0lUWZvNZoOzPgBrJYlHyEMo1ouYkLgLh3YqMF4BPIB1H09pou5V5sDZxmZyvVqHXehXsd3p9DyF1m/fiZ7uRz7ci5aXlzlPHPKNeofS+cSrjLctDWfkgS+Nrc1cbJGz3HviPv9df9L4l4jWjMlrYOvnQYaSyiVribY/27sCNqrtsgbhJcu55ZzcwQ6uHThd7pMjASdt3G+THLWkVQizY7wT9Fm6SnOiRR/9pjNzLftR/5rW6jkbuLpvW3cX17hcu2vk4aqspRajQ== peter.soetens@gmail.com"
+  jason:
+    username: jason
+    state: present
+    groups:
+      - ssh-users
+      - sudo
+      - admin
+    ssh_authorized_keys:
+      - "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHanibljxVdXVXyNXFZxR5DKMyMa8BBpHdVcO+InkFda Apollyon"
